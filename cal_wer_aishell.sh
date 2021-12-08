@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 sckt_path=$2
 
 if ! [ $1 ]; then

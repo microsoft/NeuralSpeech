@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 #Usage python align_cal_werdur_v2.py <input-tokened-hypo-text-file> <input-tokened-ref-text-file>
 #Note:
 #  The script will align <input-tokened-hypo-text-file> (text with errors) with <input-tokened-ref-text-file> (ground-truth text) and obtain the number of target token corresponding with each source token

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 # Usage python add_noise.py <input-raw-text-file> <output-noised-text-file> <random-seed>
 
 import os

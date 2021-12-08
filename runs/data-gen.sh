@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 EXP_HOME=$(cd `dirname $0`; pwd)/..
 cd $EXP_HOME
 

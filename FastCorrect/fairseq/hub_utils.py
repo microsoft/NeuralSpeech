@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 #!/usr/bin/env python3 -u
 # Copyright (c) Facebook, Inc. and its affiliates.
 #
