@@ -65,6 +65,10 @@ If you FastCorrect useful in your work, you can cite the paper as below:
         year={2021}
     }
 
+## Code of Conduct
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct),
+[trademark notice](https://docs.opensource.microsoft.com/releasing/), and [security reporting instructions](https://docs.opensource.microsoft.com/releasing/maintain/security/).
+
 ## Related Works
 
 * [FastCorrect 2: Fast Error Correction on Multiple Candidates for Automatic Speech Recognition](https://arxiv.org/pdf/2109.14420.pdf)
