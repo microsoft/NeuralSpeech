@@ -1,0 +1,5 @@
+/path/to/your/LJSpeech-1.1/wavs/LJ033-0112.wav
+/path/to/your/LJSpeech-1.1/wavs/LJ047-0089.wav
+/path/to/your/LJSpeech-1.1/wavs/LJ048-0040.wav
+/path/to/your/LJSpeech-1.1/wavs/LJ010-0096.wav
+/path/to/your/LJSpeech-1.1/wavs/LJ022-0092.wav
