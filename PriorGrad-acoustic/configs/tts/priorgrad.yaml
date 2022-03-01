@@ -12,7 +12,6 @@ predictor_sg: true
 # duration
 predictor_hidden: 256
 dur_predictor_kernel: 3
-use_gt_dur: false
 sep_dur_loss: true
 dur: 'mfa'
 
