@@ -1,0 +1,11 @@
+base_config: configs/tts/priorgrad.yaml
+data_dir: 'data/ljspeech_hfg'
+raw_data_dir: 'data/raw/LJSpeech-1.1'
+
+use_phone_stat: true
+use_std_norm: false
+std_min: 0.1
+std_max: -1
+use_std_only: false
+use_mean_only: false
+condition_phone_stat: false

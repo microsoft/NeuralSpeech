@@ -1,0 +1,3 @@
+[submodule "PriorGrad-acoustic/hifi-gan"]
+	path = PriorGrad-acoustic/hifi-gan
+	url = https://github.com/jik876/hifi-gan

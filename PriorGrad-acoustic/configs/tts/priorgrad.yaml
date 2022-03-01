@@ -1,0 +1,47 @@
+base_config: configs/tts/transformer_tts.yaml
+
+# data
+dict_file: dict
+
+# model
+hidden_size: 256
+arch: '8 8 8 8 8 8 8 8' # no conv1d
+dropout: 0.2
+
+predictor_sg: true
+# duration
+predictor_hidden: 256
+dur_predictor_kernel: 3
+use_gt_dur: false
+sep_dur_loss: true
+dur: 'mfa'
+
+# pitch and energy
+use_pitch_embed: true
+use_uv: true
+use_energy_embed: true
+pitch_loss: 'l1'
+
+# diffusion decoder model params
+diff_residual_layers: 12
+diff_residual_channels: 128
+diff_num_steps: 400
+diff_beta_start: 0.0001
+diff_beta_end: 0.05
+diff_inference_noise_schedule: [0.001, 0.01, 0.05, 0.1, 0.5, 0.8]
+
+# loss
+lambda_dur: 1.0
+lambda_pitch: 1.0
+lambda_uv: 1.0
+lambda_energy: 1.0
+mel_loss: l1
+
+# train and eval
+pretrain_fs_ckpt: ''
+warmup_updates: 2000
+max_tokens: 28000
+max_sentences: -1
+max_eval_sentences: 1
+max_updates: 1000000
+gen_dir_name: ''

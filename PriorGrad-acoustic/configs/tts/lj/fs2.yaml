@@ -1,0 +1,8 @@
+base_config: configs/tts/fs2.yaml
+data_dir: 'data/ljspeech_hfg'
+raw_data_dir: 'data/raw/LJSpeech-1.1'
+
+# model
+dropout: 0.2
+max_tokens: 28000
+val_check_interval: 1000
