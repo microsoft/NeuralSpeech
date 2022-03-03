@@ -365,9 +365,9 @@ class FastCorrectTask(TranslationTask):
         return loss, sample_size, logging_output
 
     def inference_step(
-        self, generator, models, sample, prefix_tokens=None, constraints=None, werdur_gt_str="", nbest_infer_type="predict",
+        self, generator, models, sample, prefix_tokens=None, constraints=None, werdur_gt_str="",
     ):
         with torch.no_grad():
             return generator.generate(
-               models, sample, prefix_tokens=prefix_tokens, constraints=constraints, werdur_gt_str=werdur_gt_str, nbest_infer_type=nbest_infer_type,)
+               models, sample, prefix_tokens=prefix_tokens, constraints=constraints, werdur_gt_str=werdur_gt_str)
 

@@ -9,10 +9,10 @@
 import torch
 import torch.nn.functional as F
 from fairseq import utils
-from fairseq.iterative_refinement_generator import DecoderOut
+from fastcorrect_generator import DecoderOut
 from fairseq.models import register_model, register_model_architecture
 from fairseq.models.nat import FairseqNATDecoder, FairseqNATModel, ensemble_decoder, ensemble_encoder
-from fairseq.models.transformer import Embedding, Embeddingright
+from fairseq.models.transformer import Embedding
 from fairseq.modules.transformer_sentence_encoder import init_bert_params
 from fairseq.modules import FairseqDropout
 from torch import Tensor
@@ -22,6 +22,13 @@ from fairseq.models.transformer import (
 
 import logging
 logger = logging.getLogger(__name__)
+
+def Embeddingright(num_embeddings, embedding_dim, padding_idx):
+    m = nn.Embedding(num_embeddings, embedding_dim, padding_idx=padding_idx)
+    nn.init.normal_(m.weight, mean=0, std=embedding_dim ** -0.5)
+    if padding_idx is not None:
+        nn.init.constant_(m.weight[padding_idx], 0)
+    return m
 
 def _mean_pooling(enc_feats, src_masks):
     # enc_feats: T x B x C
@@ -171,7 +178,7 @@ class FastCorrectModel(FairseqNATModel):
                 at the given path/URL. Can start with '.' or './' to reuse the
                 model archive path.
         """
-        from . import hub_utils_fc
+        import hub_utils_fc
 
         x = hub_utils_fc.from_pretrained(
             model_name_or_path,
@@ -239,15 +246,15 @@ class FastCorrectModel(FairseqNATModel):
 
     def forward_encoder(self, encoder_inputs):
         src_tokens, src_lengths = encoder_inputs
-        attn_mask = None
-        return self.encoder(src_tokens, src_lengths=src_lengths, attn_mask=attn_mask)
+        #attn_mask = None
+        return self.encoder(src_tokens, src_lengths=src_lengths)
 
     def forward(
         self, src_tokens, src_lengths, prev_output_tokens, tgt_tokens, wer_dur=None, to_be_edited=None, for_wer_gather=None, **kwargs
     ):
         # encoding
-        attn_mask = None
-        encoder_out = self.encoder(src_tokens, src_lengths=src_lengths, attn_mask=attn_mask, **kwargs)
+        # attn_mask = None
+        encoder_out = self.encoder(src_tokens, src_lengths=src_lengths, **kwargs)
 
         wer_dur_pred, to_be_edited_pred, closest_pred = self.decoder.forward_wer_dur_and_tbe(
             normalize=False, encoder_out=encoder_out
@@ -722,7 +729,7 @@ class FastCorrectDecoder(FairseqNATDecoder):
 
 
 @register_model_architecture(
-    "nonautoregressive_transformer", "nonautoregressive_transformer"
+    "fastcorrect", "fastcorrect"
 )
 def base_architecture(args):
     args.encoder_embed_path = getattr(args, "encoder_embed_path", None)
@@ -768,8 +775,3 @@ def base_architecture(args):
     args.length_loss_factor = getattr(args, "length_loss_factor", 0.1)
 
 
-@register_model_architecture(
-    "nonautoregressive_transformer", "nonautoregressive_transformer_wmt_en_de"
-)
-def nonautoregressive_transformer_wmt_en_de(args):
-    base_architecture(args)
