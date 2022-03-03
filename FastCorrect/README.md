@@ -7,11 +7,12 @@ is a novel non-autoregressive correction method for automatic speech recognition
 The current codebase supports correction on AISHELL-1, which is based on Fairseq. The code for WER calculation is from Espnet.
 
 ## Dependencies
-Currently we implement FastCorrect on the [fairseq-0.10.0](https://github.com/pytorch/fairseq/tree/v0.10.0). You can refer to fairseq installation.
+Currently we implement FastCorrect on the [fairseq-0.10.1](https://github.com/pytorch/fairseq/tree/v0.10.1). You can refer to fairseq installation.
 Some dependencies are as follows:
 - Python 3
 - NumPy
 - PyTorch==1.6.0
+- fairseq==0.10.1
 
 ## FastCorrect Pipeline
 The whole pipeline of FastCorrect consists of 4 steps, the first step is for pretraining only, which is necessary for small ASR dataset like AISHELL-1,
