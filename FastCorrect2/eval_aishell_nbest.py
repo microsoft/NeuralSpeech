@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import json
 import sys
 import torch
@@ -48,9 +51,9 @@ except:
 #checkpoint_file = "checkpoint_best.pt"
 print("test {}/{}".format(model_name_or_path, checkpoint_file))
 
-data_name_or_path = "data/aishell_nbest_ft"   # <Path-to-AISHELL1-Binary-Data>
+data_name_or_path =  # <Path-to-AISHELL1-Binary-Data>
 bpe = "sentencepiece"
-sentencepiece_model = "/blob/xuta/speech/asr/correction/nat_baseline/sentence.bpe.model"  # <path-to-sentencepiece_model>, you can use arbitrary sentencepiece for our pretrained model since it is a char-level model 
+sentencepiece_model =  # <path-to-sentencepiece_model>, you can use arbitrary sentencepiece for our pretrained model since it is a char-level model 
 
 commonset_dir = "./eval_data"
 res_dir = os.path.join(model_name_or_path, ("results_aishell" if (iter_decode_max_iter == -1) else ("results_aishell_b" + str(iter_decode_max_iter) + '_t' + str(edit_thre) + '_' + nbest_infer_type)).replace('results', 'results_' + str(test_epoch)))
@@ -63,7 +66,6 @@ try:
     short_set = sys.argv[1].split(',')
 except:
     raise ValueError()
-    #short_set = ['King-ASR-699_BTEST_Android', 'CallCenter_Single_Tag', 'OneThousandHours_zh-CN_Dev_20141130', 'OCR_Test_10hr', 'KINGLINE_DEV_EN-CN-C1_mix_DTest', 'Math', 'OOCL_10hRefined_Testdata', 'Conversational_zh-CN_EVM_Common_set', 'Wuhan_accent_Single', 'CHS_Dictation_FY19Q4', 'CHS_TED_Broadcast_20180608_Single_Test', 'Kids2490wechat', 'Wuhan_DTest_Single', 'Conversational_zh-CN_100Speaker_Common_set', 'CallCenter_Common_20180419_Single', 'Unilever_20180305_Singles', 'CHS_IncarBTest_C2', 'CommonSet_PL_SRQuality_FN_SkypeTranslation_FY19Q1_zh-CN', 'TestCorpus_TVProgram2', 'CommonSet_PL_SRQuality_FN_Interaction_Cortana_zh-CN.filter', 'Meeting_Test_L2']
 
 print("short_set:", short_set)
 

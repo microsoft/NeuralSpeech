@@ -1,8 +1,8 @@
 # FastCorrect
 
 
-[FastCorrect: FastCorrect: Fast Error Correction with Edit Alignment for Automatic Speech Recognition](https://arxiv.org/abs/2105.03842), by Yichong Leng, Xu Tan, Linchen Zhu, Jin Xu, Renqian Luo, Linquan Liu, Tao Qin, Xiang-Yang Li, Ed Lin and Tie-Yan Liu,
-is a novel non-autoregressive correction method for automatic speech recognition. It use a length predictor to detect errors and a decoder to correct errors.
+[FastCorrect 2: Fast Error Correction on Multiple Candidates for Automatic Speech Recognition](https://arxiv.org/abs/2109.14420), by Yichong Leng, Xu Tan, Rui Wang, Linchen Zhu, Jin Xu, Wenjie Liu, Linquan Liu, Tao Qin, Xiang-Yang Li, Edward Lin, Tie-Yan Liu,
+is a novel non-autoregressive correction method for automatic speech recognition. It uses multiple candidates from ASR beam search results to correct errors.
 
 The current codebase supports correction on AISHELL-1, which is based on Fairseq. The code for WER calculation is from Espnet.
 
@@ -15,7 +15,7 @@ Some dependencies are as follows:
 - fairseq==0.10.1
 
 ## FastCorrect Pipeline
-The whole pipeline of FastCorrect consists of 4 steps, the first step is for pretraining only, which is necessary for small ASR dataset like AISHELL-1,
+The whole pipeline of FastCorrect 2 consists of 4 steps, the first step is for pretraining only, which is necessary for small ASR dataset like AISHELL-1,
 and auxiliary for large production ASR dataset.
 
 ### Step 1, Unpaired Text Data Preparation
@@ -42,15 +42,15 @@ Note: For AISHELL-1 dataset, which is small and easy to fit, we decode training 
 
 
 ### Step 3, Pre-training and Fine-tuning:
-We can pretrain the FastCorrect model on pseudo paired data with `runs/train_pretrain.sh`.
+We can pretrain the FastCorrect 2 model on pseudo paired data with `runs/train_pretrain.sh`.
 
-Then we fine-tune the FastCorrect model on real paired data with `runs/train_ft.sh`.
+Then we fine-tune the FastCorrect 2 model on real paired data with `runs/train_ft.sh`.
 
 We load the pretrained model with the help of `--restore-file` flag.
 
 ### Step 4, Inference
 
-We test FastCorrect model with `runs/test_ft.sh`.
+We test FastCorrect 2 model with `runs/test_ft.sh` (eval data are in `eval_data` folder).
 
 After installing sctk (`./install_sctk.sh`), we can calculate WER with `cal_wer_aishell.sh`.
 
@@ -59,18 +59,17 @@ After installing sctk (`./install_sctk.sh`), we can calculate WER with `cal_wer_
 
 If you FastCorrect useful in your work, you can cite the paper as below:
 
-    @inproceedings{leng2021fastcorrect,
-        title={FastCorrect: Fast Error Correction with Edit Alignment for Automatic Speech Recognition},
-        author={Leng, Yichong and Tan, Xu and Zhu, Linchen and Xu, Jin and Luo, Renqian and Liu, Linquan and Qin, Tao and Li, Xiang-Yang and Lin, Ed and Liu, Tie-Yan},
-        booktitle={Advances in Neural Information Processing Systems 35},
-        year={2021}
+    @inproceedings{leng-etal-2021-fastcorrect-2,
+        title = "{F}ast{C}orrect 2: Fast Error Correction on Multiple Candidates for Automatic Speech Recognition",
+        author = "Leng, Yichong  and Tan, Xu  and
+        Wang, Rui  and Zhu, Linchen  and Xu, Jin  and Liu, Wenjie  and Liu, Linquan  and Li, Xiang-Yang  and Qin, Tao  and
+        Lin, Edward  and Liu, Tie-Yan",
+        booktitle = "Findings of the Association for Computational Linguistics: EMNLP 2021",
+        month = nov,
+        year = "2021",
     }
 
 ## Code of Conduct
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct),
 [trademark notice](https://docs.opensource.microsoft.com/releasing/), and [security reporting instructions](https://docs.opensource.microsoft.com/releasing/maintain/security/).
-
-## Related Works
-
-* [FastCorrect 2: Fast Error Correction on Multiple Candidates for Automatic Speech Recognition](https://arxiv.org/pdf/2109.14420.pdf)
 

@@ -1,6 +1,14 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
+#Usage python align_cal_werdur_v2.py <input-tokened-hypo-text-file> <input-tokened-ref-text-file>
+#Note:
+#  The script will align <input-tokened-hypo-text-file> (text with errors) with <input-tokened-ref-text-file> (ground-truth text) and obtain the number of target token corresponding with each source token
+#  The script might skip sentence which takes too much time for alignment.
+#  The aligned result of <input-tokened-hypo-text-file> is in <input-tokened-hypo-text-file>.src.werdur.full, which consists of source tokens with their duration.
+#  The aligned result of <input-tokened-ref-text-file> is in <input-tokened-hypo-ref-file>.tgt, which consists of target tokens.
+#  The sum of all source token durations is equal to the number of target token.
+#  <input-tokened-hypo-text-file>.src.werdur.full is used as source file when generating binary dataset; <input-tokened-hypo-ref-file>.tgt is used as target file when generating binary dataset
 import sys
 import numpy as np
 import copy
@@ -8,21 +16,21 @@ import random
 
 import signal
 import time
-import os
+
 
 def set_timeout(num, callback):
     def wrap(func):
-        def handle(signum, frame):  
+        def handle(signum, frame):
             raise RuntimeError
 
         def to_do(*args, **kwargs):
             try:
                 signal.signal(signal.SIGALRM, handle)
-                signal.alarm(num)  
+                signal.alarm(num)
                 # print('start alarm signal.')
                 r = func(*args, **kwargs)
                 # print('close alarm signal.')
-                signal.alarm(0)  
+                signal.alarm(0)
                 return r
             except RuntimeError as e:
                 callback()
@@ -38,7 +46,6 @@ def after_timeout():
 #from g2pM import G2pM
 #model = G2pM()
 
-
 # all_char_pinyin.txt contains token and its pinyin string, splitted by '\t', which can be obtained with g2pM
 g2pM_dict = {}
 with open('all_char_pinyin.txt', 'r', encoding='utf-8') as infile:
@@ -52,7 +59,23 @@ with open('all_char_pinyin.txt', 'r', encoding='utf-8') as infile:
             g2pM_dict[line[0]] = line[0]
             print("No pinyin warning:", line[0])
 
+hypo_file = sys.argv[1]
+ref_file = sys.argv[2]
+hypo_file_out = sys.argv[3]
+ref_file_out = sys.argv[4]
+#tsv_file = sys.argv[1]
+all_hypo_line = []
+all_ref_line = []
 
+print("Loading: ", hypo_file)
+with open(hypo_file, 'r', encoding='utf-8') as infile:
+    for line in infile.readlines():
+        all_hypo_line.append([i.strip().split() for i in line.strip().split(' # ')])
+
+print("Loading: ", ref_file)
+with open(ref_file, 'r', encoding='utf-8') as infile:
+    for line in infile.readlines():
+        all_ref_line.append(line.strip().split())
 
 def init_number_vec(len_hyp, len_ref):
     return_vec = []
@@ -103,6 +126,7 @@ def calculate_wer_dur(hypo_list, ref_list):
 
     i = len_hyp
     j = len_ref
+    # nb_map = {"N": len_ref, "C": 0, "W": 0, "I": 0, "D": 0, "S": 0}
     char_map = []
     current_chars = []
     res_chars = []
@@ -150,8 +174,6 @@ def calculate_wer_dur(hypo_list, ref_list):
             char_map.append([hypo_list[i], current_chars])
             current_chars = []
             # nb_map['I'] += 1
-        # else:
-        #     raise ValueError("Impossible condition!")
 
     if res_chars:
         char_map[-1][-1].extend(res_chars)
@@ -160,27 +182,9 @@ def calculate_wer_dur(hypo_list, ref_list):
     for i in range(len(char_map)):
         char_map[i][-1].reverse()
 
-    # match_idx.reverse()
-    # wrong_cnt = cost_matrix[len_hyp][len_ref]
-    # nb_map["W"] = wrong_cnt
-
-    # print("ref: %s" % " ".join(ref_list))
-    # print("hyp: %s" % " ".join(hypo_list))
-    # print(nb_map)
-    # print("match_idx: %s" % str(match_idx))
 
     result_map = [len(i[1]) for i in char_map]
     to_be_modify = [int((len(i[1]) == 1 and i[1][0] == i[0])) for i in char_map]
-    # to_be_modify = []
-    # for i in char_map:
-    #     if (len(char_map[i][1]) = 1 and char_map[i][1][0] == char_map[i][0])
-    #         to_be_modify.append(0)
-    #     else:
-    #         for j in range(len(char_map[i][1])):
-    #             to_be_modify.append(1)
-    # if len(to_be_modify) >= 180:
-    #    print(char_map)
-    #    print(to_be_modify)
 
     assert sum(result_map) == len_ref
     assert len(result_map) == len_hyp
@@ -268,7 +272,7 @@ def cal_charwer(hypo_string, ref_string):
                 insertion = cost_matrix[i - 1][j] + 1
                 deletion = cost_matrix[i][j - 1] + 1
 
-                compare_val = [substitution, insertion, deletion] 
+                compare_val = [substitution, insertion, deletion]
 
                 if (substitution > insertion) and (insertion == deletion):
                     min_val = insertion
@@ -290,15 +294,16 @@ def cal_charwer_zh(hypo_string, ref_string):
         ref_string = ""
     hypo_string = "".join(hypo_string.strip().split())
     ref_string = "".join(ref_string.strip().split())
-
-
+    #print(hypo_string)
+    #print(ref_string)
     if hypo_string:
-        hypo_string = "".join([g2pM_dict.get(i, i) for i in hypo_string])
+        hypo_string = "".join([g2pM_dict[i] for i in hypo_string])
         #hypo_string = "".join(model(hypo_string, tone=False, char_split=False))
     if ref_string:
-        ref_string = "".join([g2pM_dict.get(i, i) for i in ref_string])
+        ref_string = "".join([g2pM_dict[i] for i in ref_string])
         #ref_string = "".join(model(ref_string, tone=False, char_split=False))
-
+    #print(hypo_string)
+    #print(ref_string)
     if hypo_string == "":
         return len(ref_string)
     if ref_string == "":
@@ -327,7 +332,7 @@ def cal_charwer_zh(hypo_string, ref_string):
                 insertion = cost_matrix[i - 1][j] + 1
                 deletion = cost_matrix[i][j - 1] + 1
 
-                compare_val = [substitution, insertion, deletion] 
+                compare_val = [substitution, insertion, deletion]
 
                 if (substitution > insertion) and (insertion == deletion):
                     min_val = insertion
@@ -350,7 +355,7 @@ gram2_dict = {}
 #         if i % 1000000 == 0:
 #             print(i, 'loaded!')
 
-gram3_dict = {}
+# gram3_dict = {}
 # with open('gram3.txt', 'r',
 #           encoding='utf-8') as infile:
 #     for i, line in enumerate(infile.readlines()):
@@ -1018,7 +1023,7 @@ def cal_token_char_num(sentence):
     char_num = len("".join(sentence))
     return token_num * 1000 + char_num
 
-@set_timeout(300000, after_timeout)
+@set_timeout(30, after_timeout)  # 30s limitation for align
 def align_nbest_encoder(nbest_list, ref_sen):
     token_char_num_list = [cal_token_char_num(i) for i in nbest_list]
     origin2sort = list(np.argsort(token_char_num_list, kind='stable')[::-1])
@@ -1072,12 +1077,6 @@ def align_nbest_encoder(nbest_list, ref_sen):
     for i in range(len(nbest_list)):
         final_align_result[origin2sort[i]] = align_result[i]
 
-    output_token_list = []
-    for i in final_align_result:
-        output_token_list.append(" ".join([m if m else '<void>' for m in i]))
-
-    '''
-
     final_charwer = []
     final_werdur_list = []
     final_same = []
@@ -1100,13 +1099,14 @@ def align_nbest_encoder(nbest_list, ref_sen):
 
     final_merge_score = [int(i == max_final_merge_score) for i in final_merge_score]
     
-    
-    #for i in final_align_result:
-    #    print(i)
-    #for i in final_werdur_list:
-    #    print(i)
-    #print(ref_sen)
-    #print(final_merge_score)
+    '''
+    for i in final_align_result:
+        print(i)
+    for i in final_werdur_list:
+        print(i)
+    print(ref_sen)
+    print(final_merge_score)
+    '''
 
     output_token_list = []
     output_werdur_list = []
@@ -1114,43 +1114,47 @@ def align_nbest_encoder(nbest_list, ref_sen):
     for i, j, k in zip(final_align_result, final_werdur_list, final_merge_score):
         output_token_list.append(" ".join([m if m else '<void>' for m in i] + [str(k)]))
         output_werdur_list.append(" ".join([str(m) for m in j]))
-
+        if len(output_token_list[-1]) <= 1 or len(output_werdur_list[-1]) == 0:
+            return None
+    if not ref_sen:
+        return None
     output_token_str = " ||| ".join(output_token_list)
     output_werdur_str = " ||| ".join(output_werdur_list)
 
 
     output_src_str = output_token_str + " |||| " + output_werdur_str
     output_tgt_str = " ".join(ref_sen)
-    '''
-    output_src_str = " ||| ".join(output_token_list)
-    return output_src_str
 
-
+    # return final_align_result, final_werdur_list, final_merge_score
+    return output_src_str, output_tgt_str
 
 import time
 start_time = time.time()
+count = 0
+count_no_skip = 0
+with open(ref_file_out + '.tgt', 'w', encoding='utf-8') as outfile_tgt:
+    with open(hypo_file_out + '.src.werdur.full', 'w', encoding='utf-8') as outfile_full:
+        for hypo_list, ref_list in zip(all_hypo_line, all_ref_line):
+            skip_this = False
+            for i in hypo_list:
+                if not i:
+                    skip_this = True
+            if not ref_list:
+                skip_this = True
+            if not skip_this:
+                results = align_nbest_encoder(hypo_list, ref_list)
+                if results:
+                    count_no_skip += 1
+                    output_src_str, output_tgt_str = results
+                    outfile_full.write(output_src_str + "\n")
+                    outfile_tgt.write(output_tgt_str + "\n")
 
-import sys
-tgt_folder = sys.argv[1]
+            count += 1
+            #if count % 1 == 0:
+            #    print(count, "finished!")
+            if count % 100 == 0:
+                print(count, "in", time.time() - start_time, "s")
+                print(count_no_skip, "not skipped!")
 
-import json
-import copy
 
-all_json = [os.path.join(tgt_folder, 'nbest_token_raw.data.json')]
-for json_file in all_json:
-    print(json_file, "begin!")
-    count = 0
-    #count_no_skip = 0
-    all_info = json.load(open(json_file, 'r', encoding='utf-8'))
-    all_info_new = copy.deepcopy(all_info)
-    for k, v in all_info["utts"].items():
-        output_src_str = align_nbest_encoder([i.split() for i in v['output'][0]["rec_token"].split(' # ')], None)
-        all_info_new["utts"][k]['output'][0]["rec_token"] = output_src_str
-        count += 1
-        if count % 100 == 0:
-            print(count, "in", time.time() - start_time, "s")
-    
-    with open(json_file.replace('nbest_token_raw.data.json', 'aligned_nbest_token_raw.data.json'), 'w', encoding='utf-8') as result_file:
-        json.dump(all_info_new, result_file, indent=4, ensure_ascii=False)
-    print(json_file, "finished!")
 

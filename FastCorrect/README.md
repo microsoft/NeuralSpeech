@@ -50,7 +50,7 @@ We load the pretrained model with the help of `--restore-file` flag.
 
 ### Step 4, Inference
 
-We test FastCorrect model with `runs/test_ft.sh`.
+We test FastCorrect model with `runs/test_ft.sh` (eval data are in `eval_data` folder).
 
 After installing sctk (`./install_sctk.sh`), we can calculate WER with `cal_wer_aishell.sh`.
 
