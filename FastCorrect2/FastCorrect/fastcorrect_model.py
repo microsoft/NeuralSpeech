@@ -24,7 +24,7 @@ from fairseq.models.transformer import (
 )
 import torch.nn as nn
 from typing import Any, Dict, List, Optional, Tuple
-
+from fairseq.models.fairseq_encoder import EncoderOut
 
 import logging
 logger = logging.getLogger(__name__)
@@ -421,7 +421,7 @@ class FastCorrectModel(FairseqNATModel):
                 "loss": to_be_edited_pred_loss,
                 "factor": self.decoder.length_loss_factor,
             }
-        if self.src_with_nbest_werdur and not self.werdur_as_cif_alpha:
+        if self.src_with_nbest_werdur:
             return_dict['closest_loss'] = {
                 "loss": closest_loss,
                 "factor": self.decoder.length_loss_factor,
@@ -615,8 +615,68 @@ class FastCorrectEncoder(TransformerEncoder):
             self.nbest_reshape = None
 
     @ensemble_encoder
-    def forward(self, *args, **kwargs):
-        return super().forward(*args, **kwargs)
+    def forward(
+        self,
+        src_tokens,
+        src_lengths,
+        attn_mask=None,
+        return_all_hiddens: bool = False,
+        token_embeddings: Optional[torch.Tensor] = None,
+    ):
+        """
+        Args:
+            src_tokens (LongTensor): tokens in the source language of shape
+                `(batch, src_len)`
+            src_lengths (torch.LongTensor): lengths of each source sentence of
+                shape `(batch)`
+            return_all_hiddens (bool, optional): also return all of the
+                intermediate hidden states (default: False).
+            token_embeddings (torch.Tensor, optional): precomputed embeddings
+                default `None` will recompute embeddings
+
+        Returns:
+            namedtuple:
+                - **encoder_out** (Tensor): the last encoder layer's output of
+                  shape `(src_len, batch, embed_dim)`
+                - **encoder_padding_mask** (ByteTensor): the positions of
+                  padding elements of shape `(batch, src_len)`
+                - **encoder_embedding** (Tensor): the (scaled) embedding lookup
+                  of shape `(batch, src_len, embed_dim)`
+                - **encoder_states** (List[Tensor]): all intermediate
+                  hidden states of shape `(src_len, batch, embed_dim)`.
+                  Only populated if *return_all_hiddens* is True.
+        """
+        x, encoder_embedding = self.forward_embedding(src_tokens, token_embeddings)
+
+        # B x T x C -> T x B x C
+        x = x.transpose(0, 1)
+
+        # compute padding mask
+        if len(src_tokens.shape) == 3:
+            encoder_padding_mask = src_tokens[:, :, 0].eq(self.padding_idx)
+        else:
+            encoder_padding_mask = src_tokens.eq(self.padding_idx)
+
+        encoder_states = [] if return_all_hiddens else None
+
+        # encoder layers
+        for layer in self.layers:
+            x = layer(x, encoder_padding_mask, attn_mask=attn_mask)
+            if return_all_hiddens:
+                assert encoder_states is not None
+                encoder_states.append(x)
+
+        if self.layer_norm is not None:
+            x = self.layer_norm(x)
+
+        return EncoderOut(
+            encoder_out=x,  # T x B x C
+            encoder_padding_mask=encoder_padding_mask,  # B x T
+            encoder_embedding=encoder_embedding,  # B x T x C
+            encoder_states=encoder_states,  # List[T x B x C]
+            src_tokens=None,
+            src_lengths=None,
+        )
 
     def forward_embedding(
         self, src_tokens, token_embedding: Optional[torch.Tensor] = None
@@ -787,15 +847,16 @@ class FastCorrectDecoder(FairseqNATDecoder):
 
 
         self.pos_before_reshape = getattr(args, "pos_before_reshape", False)
+        '''
         self.embed_positions = (
             PositionalEmbedding(
                 args.max_target_positions,
-                embed_dim,
-                embed_dim * self.src_with_nbest_werdur if (self.pos_before_reshape and self.merge_nbest_werdur) else embed_dim,
+                embed_dim * self.src_with_nbest_werdur if self.pos_before_reshape else embed_dim,
                 self.padding_idx,
                 learned=args.decoder_learned_pos,
             )
         )
+        '''
 
 
 
@@ -1056,10 +1117,5 @@ def base_architecture(args):
     args.src_embedding_copy = getattr(args, "src_embedding_copy", False)
 
 
-@register_model_architecture(
-    "nonautoregressive_transformer", "nonautoregressive_transformer_wmt_en_de"
-)
-def nonautoregressive_transformer_wmt_en_de(args):
-    base_architecture(args)
 
 

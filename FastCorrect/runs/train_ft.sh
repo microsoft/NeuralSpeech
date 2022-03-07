@@ -7,7 +7,7 @@ cd $EXP_HOME
 export MKL_THREADING_LAYER=GNU
 
 DATA_PATH=   #<Path-to-AISHELL1-Binary-Data>
-export PYTHONPATH=$EXP_HOME/FastCorrect:$PYTHONPATH
+export PYTHONPATH=$EXP_HOME/FC_utils:$PYTHONPATH
 
 PRETRAINED=  #<PATH-to-Pretrain-Save-Dir>/checkpoint30.pt
 SAVE_DIR=   #<PATH-to-AISHELL1-Save-Dir>

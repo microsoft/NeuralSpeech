@@ -17,7 +17,7 @@ dict_path=data/werdur_data_aishell/dict.CN_char.txt  #<path-to-dictionary>
 
 #We use shared dictionary extracted from training corpus
 
-$EXP_HOME/FastCorrect/preprocess_fc.py --source-lang zh_CN --target-lang zh_CN_tgt \
+$EXP_HOME/FC_utils/preprocess_fc.py --source-lang zh_CN --target-lang zh_CN_tgt \
     --task translation \
     --trainpref $TEXT/train --validpref $TEXT/valid \
     --padding-factor 8 \

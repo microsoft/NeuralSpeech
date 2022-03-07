@@ -251,10 +251,9 @@ class FastCorrectTask(TranslationTask):
             max_source_positions=self.args.max_source_positions,
             max_target_positions=self.args.max_target_positions,
             prepend_bos=True,
-            cal_wer_dur=self.args.cal_wer_dur,
             src_with_werdur=self.args.src_with_werdur,
             src_with_nbest_werdur=self.args.src_with_nbest_werdur,
-            append_eos_to_target=self.args.cal_wer_dur ,  # add this although eos already add in data preprocess
+            append_eos_to_target=False,  # add this although eos already add in data preprocess
         )
 
     def inject_noise(self, target_tokens):
@@ -390,9 +389,9 @@ class FastCorrectTask(TranslationTask):
         return loss, sample_size, logging_output
 
     def inference_step(
-        self, generator, models, sample, prefix_tokens=None, constraints=None, werdur_gt_str="",
+        self, generator, models, sample, prefix_tokens=None, constraints=None, werdur_gt_str="", nbest_infer_type="",
     ):
         with torch.no_grad():
             return generator.generate(
-               models, sample, prefix_tokens=prefix_tokens, constraints=constraints, werdur_gt_str=werdur_gt_str)
+               models, sample, prefix_tokens=prefix_tokens, constraints=constraints, werdur_gt_str=werdur_gt_str, nbest_infer_type=nbest_infer_type)
 

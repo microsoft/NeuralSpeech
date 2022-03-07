@@ -7,7 +7,7 @@ cd $EXP_HOME
 export MKL_THREADING_LAYER=GNU
 
 DATA_PATH=<Path-to-pretrain-Binary-Data>
-export PYTHONPATH=$EXP_HOME/FastCorrect:$PYTHONPATH
+export PYTHONPATH=$EXP_HOME/FC_utils:$PYTHONPATH
 
 SAVE_DIR=<PATH-to-Pretrain-Save-Dir>
 fairseq-train $DATA_PATH --task fastcorrect \
