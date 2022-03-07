@@ -1,4 +1,4 @@
-# FastCorrect
+# FastCorrect 2
 
 
 [FastCorrect 2: Fast Error Correction on Multiple Candidates for Automatic Speech Recognition](https://arxiv.org/abs/2109.14420), by Yichong Leng, Xu Tan, Rui Wang, Linchen Zhu, Jin Xu, Wenjie Liu, Linquan Liu, Tao Qin, Xiang-Yang Li, Edward Lin, Tie-Yan Liu,
@@ -57,7 +57,7 @@ After installing sctk (`./install_sctk.sh`), we can calculate WER with `cal_wer_
 
 ## Reference
 
-If you FastCorrect useful in your work, you can cite the paper as below:
+If you FastCorrect 2 useful in your work, you can cite the paper as below:
 
     @inproceedings{leng-etal-2021-fastcorrect-2,
         title = "{F}ast{C}orrect 2: Fast Error Correction on Multiple Candidates for Automatic Speech Recognition",
