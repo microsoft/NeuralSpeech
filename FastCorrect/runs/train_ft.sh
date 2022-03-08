@@ -9,7 +9,7 @@ export MKL_THREADING_LAYER=GNU
 DATA_PATH=   #<Path-to-AISHELL1-Binary-Data>
 export PYTHONPATH=$EXP_HOME/FC_utils:$PYTHONPATH
 
-PRETRAINED=  #<PATH-to-Pretrain-Save-Dir>/checkpoint30.pt
+PRETRAINED=  #<PATH-to-Pretrain-Save-Dir>/checkpoint10.pt
 SAVE_DIR=   #<PATH-to-AISHELL1-Save-Dir>
 mkdir -p $SAVE_DIR
 fairseq-train $DATA_PATH --task fastcorrect \

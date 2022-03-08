@@ -44,6 +44,8 @@ Note: For AISHELL-1 dataset, which is small and easy to fit, we decode training 
 ### Step 3, Pre-training and Fine-tuning:
 We can pretrain the FastCorrect model on pseudo paired data with `runs/train_pretrain.sh`.
 
+We release our pretrain model in [here](https://msramllasc.blob.core.windows.net/modelrelease/fastcorrect_pretrain.pt).
+
 Then we fine-tune the FastCorrect model on real paired data with `runs/train_ft.sh`.
 
 We load the pretrained model with the help of `--restore-file` flag.
