@@ -12,7 +12,7 @@ sudo apt-get install libsndfile1 -y
 
 ### 1. Prepare dataset
 
-Note: You can also download our preprocessed binarized data from [here](https://msramllasc.blob.core.windows.net/modelrelease/LightSpeech/data.tgz), then you can skip step 1-3, and directly navigate to step 4.
+Note: You can also download our preprocessed binarized data from [here](https://msramllasc.blob.core.windows.net/modelrelease/LightSpeech/data.tgz), then you can skip step 1-3, and directly navigate to [step 4](#4-train-lightspeech).
 
 ```bash
 mkdir -p data/raw/
@@ -52,7 +52,7 @@ CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/lightspeech.py --config configs
 The generated output will be under `checkpoints/lightspeech/generated_[step]` folder.
 
 ### 7. Trained Checkpoint
-We release our trained model checkpoint [here](https://msramllasc.blob.core.windows.net/modelrelease/LightSpeech/model_ckpt_steps_84000.ckpt). You can donwnload it and place it under `checkpoints/lightspeech`. Then you can do the inference following step 6.
+We release our trained model checkpoint [here](https://msramllasc.blob.core.windows.net/modelrelease/LightSpeech/model_ckpt_steps_84000.ckpt). You can donwnload it and place it under `checkpoints/lightspeech`. Then you can do the inference following [step 6](#6-inference).
 
 You can refer to [https://speechresearch.github.io/lightspeech/](https://speechresearch.github.io/lightspeech/) for generated audio samples.
 
