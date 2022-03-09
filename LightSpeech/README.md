@@ -12,7 +12,7 @@ sudo apt-get install libsndfile1 -y
 
 ### 1. Prepare dataset
 
-Note: You can also download our preprossed binarized data from [here](https://msramllasc.blob.core.windows.net/modelrelease/LightSpeech/data.tgz), then you can skip step 1-3, and directly navigate to step 4.
+Note: You can also download our preprocessed binarized data from [here](https://msramllasc.blob.core.windows.net/modelrelease/LightSpeech/data.tgz), then you can skip step 1-3, and directly navigate to step 4.
 
 ```bash
 mkdir -p data/raw/
