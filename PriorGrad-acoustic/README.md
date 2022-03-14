@@ -43,19 +43,29 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
    cd montreal-forced-aligner/lib/thirdparty/bin && rm libopenblas.so.0 && ln -s ../../libopenblasp-r0-8dca6697.3.0.dev.so libopenblas.so.0
    cd ../../../../
    # Run MFA
-   ./montreal-forced-aligner/bin/mfa_train_and_align data/raw/LJSpeech-1.1/mfa_input data/raw/LJSpeech-1.1/dict_mfa.txt data/raw/LJSpeech-1.1/mfa_outputs -t ./montreal-forced-aligner/tmp -j 24
+   ./montreal-forced-aligner/bin/mfa_train_and_align \
+   data/raw/LJSpeech-1.1/mfa_input \
+   data/raw/LJSpeech-1.1/dict_mfa.txt \
+   data/raw/LJSpeech-1.1/mfa_outputs \
+   -t ./montreal-forced-aligner/tmp \
+   -j 24
    ```
 
 4. Build binary data and extract mean & variance for PriorGrad-acoustic. The mel-spectrogram is compatible with open-source [HiFi-GAN](https://github.com/jik876/hifi-gan)
 
    ```bash
-   PYTHONPATH=. python datasets/tts/lj/gen_fs2_p.py --config configs/tts/lj/priorgrad.yaml --exp_name priorgrad
+   PYTHONPATH=. python datasets/tts/lj/gen_fs2_p.py \
+   --config configs/tts/lj/priorgrad.yaml \
+   --exp_name priorgrad
    ```
 
 5. Train PriorGrad-acoustic
    ```bash
    # the following command trains PriorGrad-acoustic with default parameters defined in configs/tts/lj/priorgrad.yaml
-   CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/priorgrad.py --config configs/tts/lj/priorgrad.yaml --exp_name priorgrad --reset
+   CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/priorgrad.py \
+   --config configs/tts/lj/priorgrad.yaml \
+   --exp_name priorgrad \
+   --reset
    ```
 
 6. Download pre-trained HiFi-GAN vocoder
@@ -66,7 +76,7 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
 
    
 7. Inference (fast mode with T=12)
-    ```bash
+   ```bash
    # the following command performs test set inference along with a grid search of the reverse noise schedule. 
     CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/priorgrad.py \
    --config configs/tts/lj/priorgrad.yaml \
@@ -74,7 +84,7 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
    --reset \
    --infer \
    --fast --fast_iter 12
-    ```
+   ```
    
 when `--infer --fast`, the model applies grid search of beta schedules with the specified number of `--fast_iter` steps for the given model checkpoint.
 
@@ -86,15 +96,15 @@ when `--infer --fast`, the model applies grid search of beta schedules with the 
 ## Text-to-speech with user-given text
 
 `tasks/priorgrad_inference.py` provides the text-to-speech inference of PriorGrad-acoustic with user-given text file defined in `--inference_text`. Refer to `inference_text.txt` for example.
-```bash
-# the following command performs text-to-speech inference from inference_text.txt
-CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/priorgrad_inference.py \
---config configs/tts/lj/priorgrad.yaml \
---exp_name priorgrad \
---reset \
---inference_text inference_text.txt \
---fast --fast_iter 12
-```
+   ```bash
+   # the following command performs text-to-speech inference from inference_text.txt
+   CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/priorgrad_inference.py \
+   --config configs/tts/lj/priorgrad.yaml \
+   --exp_name priorgrad \
+   --reset \
+   --inference_text inference_text.txt \
+   --fast --fast_iter 12
+   ```
 
 Samples are saved to `inference` folder created at `--exp_name`.
 
@@ -107,7 +117,11 @@ Instead of MFA, FastSpeech 2 and PriorGrad also support Monotonic Alignment Sear
 
    ```bash
    # The following command trains a variant of PriorGrad which uses MAS for training the duration predictor.
-   CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/priorgrad.py --config configs/tts/lj/priorgrad.yaml --hparams dur=mas --exp_name priorgrad_mas --reset
+   CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/priorgrad.py \
+   --config configs/tts/lj/priorgrad.yaml \
+   --hparams dur=mas \
+   --exp_name priorgrad_mas \
+   --reset
    ```
 
 ## Reference
