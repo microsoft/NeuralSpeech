@@ -67,8 +67,13 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
    
 7. Inference (fast mode with T=12)
     ```bash
-    CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/priorgrad.py --config configs/tts/lj/priorgrad.yaml --exp_name priorgrad --reset \
-    --infer --fast --fast_iter 12
+   # the following command performs test set inference along with a grid search of the reverse noise schedule. 
+    CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/priorgrad.py \
+   --config configs/tts/lj/priorgrad.yaml \
+   --exp_name priorgrad \
+   --reset \
+   --infer \
+   --fast --fast_iter 12
     ```
    
 when `--infer --fast`, the model applies grid search of beta schedules with the specified number of `--fast_iter` steps for the given model checkpoint.
@@ -77,7 +82,23 @@ when `--infer --fast`, the model applies grid search of beta schedules with the 
 
 
 `--infer` without `--fast` performs slow sampling with the same `T` as the forward diffusion used in training.
-   
+
+## Text-to-speech with user-given text
+
+`tasks/priorgrad_inference.py` provides the text-to-speech inference of PriorGrad-acoustic with user-given text file defined in `--inference_text`. Refer to `inference_text.txt` for example.
+```bash
+# the following command performs text-to-speech inference from inference_text.txt
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/priorgrad_inference.py \
+--config configs/tts/lj/priorgrad.yaml \
+--exp_name priorgrad \
+--reset \
+--inference_text inference_text.txt \
+--fast --fast_iter 12
+```
+
+Samples are saved to `inference` folder created at `--exp_name`.
+
+when using `--fast`, the grid-searched reverse noise schedule file is required. Refer to the inference section of the examples above.  
 
 ### Optional feature: Monotonic alignment search (MAS) support
 Instead of MFA, FastSpeech 2 and PriorGrad also support Monotonic Alignment Search (MAS) used in [Glow-TTS](https://github.com/jaywalnut310/glow-tts/) for duration predictor training.
