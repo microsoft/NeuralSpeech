@@ -74,5 +74,5 @@ with torch.no_grad():
         mel_out = outputs['mel_out'].permute(0, 2, 1) # [1, num_mels, T]
         wav_out = task.vocoder(mel_out).squeeze().cpu().numpy() # [1, T_wav]
         # save mel and wav
-        task.save_result(wav_out, mel_out.cpu()[0], f'P', i, text, gen_dir)
+        task.save_result(wav_out, mel_out.cpu()[0].T, f'P', i, text, gen_dir)
 
