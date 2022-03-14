@@ -32,21 +32,24 @@ sys.path.append("hifi-gan")
 
 class FastSpeechDataset(BaseDataset):
     """A dataset that provides helpers for batching."""
-    def __init__(self, data_dir, phone_encoder, prefix, hparams, shuffle=False):
+    def __init__(self, data_dir, phone_encoder, prefix, hparams, shuffle=False, infer_only=False):
         super().__init__(data_dir, prefix, hparams, shuffle)
         self.phone_encoder = phone_encoder
-        self.data = None
-        self.idx2key = np.load(f'{self.data_dir}/{self.prefix}_all_keys.npy')
-        self.sizes = np.load(f'{self.data_dir}/{self.prefix}_lengths.npy')
+        self.infer_only = infer_only
+        if not self.infer_only:
+            self.data = None
+            self.idx2key = np.load(f'{self.data_dir}/{self.prefix}_all_keys.npy')
+            self.sizes = np.load(f'{self.data_dir}/{self.prefix}_lengths.npy')
         self.num_spk = hparams['num_spk']
         self.use_indexed_ds = hparams['indexed_ds']
         self.indexed_bs = None
         self.g2p = G2p()
 
-        # filter out items with no pitch
-        f0s = np.load(f'{self.data_dir}/{prefix}_f0s.npy', allow_pickle=True)
-        self.avail_idxs = [i for i, f0 in enumerate(f0s) if sum(f0) > 0]
-        self.sizes = [self.sizes[i] for i in self.avail_idxs]
+        if not self.infer_only:
+            # filter out items with no pitch
+            f0s = np.load(f'{self.data_dir}/{prefix}_f0s.npy', allow_pickle=True)
+            self.avail_idxs = [i for i, f0 in enumerate(f0s) if sum(f0) > 0]
+            self.sizes = [self.sizes[i] for i in self.avail_idxs]
 
         # pitch stats
         f0s = np.load(f'{self.data_dir}/train_f0s.npy', allow_pickle=True)

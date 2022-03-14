@@ -39,8 +39,7 @@ task.model.eval().cuda()
 task.prepare_vocoder_hfg()
 
 # define FastSpeechDataset. will only use the functions (text_to_phone and phone_to_prior) and not the actual test dataset
-dataset = FastSpeechDataset(hparams['data_dir'], task.phone_encoder,
-                            hparams['test_set_name'], hparams, shuffle=False)
+dataset = FastSpeechDataset(hparams['data_dir'], task.phone_encoder, None, hparams, shuffle=False, infer_only=True)
 
 # inference requires phoneme input and the corresponding target_mean and target_std
 with open(hparams['inference_text'], 'r') as f:
