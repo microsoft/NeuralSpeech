@@ -1,0 +1,2 @@
+Prior grad is a diffusion based acoustic model which uses a non standard Gaussian as a prior distribution.
+You can type in any text here to perform text to speech.

@@ -25,6 +25,7 @@ import torch.optim
 import torch.utils.data
 import torch.nn.functional as F
 import tts_utils
+from g2p_en import G2p
 
 sys.path.append("hifi-gan")
 
@@ -40,6 +41,7 @@ class FastSpeechDataset(BaseDataset):
         self.num_spk = hparams['num_spk']
         self.use_indexed_ds = hparams['indexed_ds']
         self.indexed_bs = None
+        self.g2p = G2p()
 
         # filter out items with no pitch
         f0s = np.load(f'{self.data_dir}/{prefix}_f0s.npy', allow_pickle=True)
@@ -86,6 +88,26 @@ class FastSpeechDataset(BaseDataset):
                 self.phone_to_std = torch.ones_like(self.phone_to_std)
                 print("INFO: phoneme std stats: min {:.4f} max {:.4f} mean {:.4f} std {:.4f}".
                       format(self.phone_to_std.min(), self.phone_to_std.max(), self.phone_to_std.mean(), self.phone_to_std.std()))
+
+    def text_to_phone(self, txt):
+        # function that converts the user-given text to phoneme sequence used in PriorGrad-acoustic
+        # the implementation mirrors datasets/tts/lj/prepare.py and datasets/tts/lj/gen_fs2_p.py
+        # input: text string
+        # output: encoded phoneme string
+        phs = [p.replace(" ", "|") for p in self.g2p(txt)]
+        ph = " ".join(phs)
+        ph = "<UNK> " + ph + " <EOS>"
+        phone_encoded = self.phone_encoder.encode(ph)
+        return phone_encoded
+
+    def phone_to_prior(self, phone):
+        # TTS inference function that returns prior mean and std given the user-given phoneme sequence
+        # input: phoneme sequence with shape [T]
+        # output: phoneme-level prior mean and std with shape [T, num_mels]
+        assert self.use_phone_stat is True, "phone_to_prior does not support the model with use_phone_stat=False."
+        spec_mean = torch.index_select(self.phone_to_mean, 0, phone)
+        spec_std = torch.index_select(self.phone_to_std, 0, phone)
+        return spec_mean, spec_std
 
     def _get_item(self, index):
         if not self.use_indexed_ds:
