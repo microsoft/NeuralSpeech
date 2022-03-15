@@ -46,11 +46,11 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
    --fast_iter 6
    ```
    
-`--fast` `--fast_iter 6` uses fast inference noise schedule with `--fast-iter` reverse diffusion steps.
-
-6, 12, and 50 `--fast_iter` are officially supported. If other value is provided, the model uses a linear beta schedule. Note that the linear schedule is expected to perform worse.
-
-If `--fast` is not provided, the model performs slow sampling with the same `T` step forward diffusion used in training.
+   `--fast` `--fast_iter 6` uses fast inference noise schedule with `--fast-iter` reverse diffusion steps.
+   
+   6, 12, and 50 `--fast_iter` are officially supported. If other value is provided, the model uses a linear beta schedule. Note that the linear schedule is expected to perform worse.
+   
+   If `--fast` is not provided, the model performs slow sampling with the same `T` step forward diffusion used in training.
 
 ## Pretrained weights
 We release the pretrained weights of PriorGrad-vocoder model trained for 3M steps.
