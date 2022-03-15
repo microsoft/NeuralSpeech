@@ -67,6 +67,19 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
    --exp_name priorgrad \
    --reset
    ```
+   
+   ### Optional feature: Monotonic alignment search (MAS) support
+   Instead of MFA, PriorGrad also supports Monotonic Alignment Search (MAS) used in [Glow-TTS](https://github.com/jaywalnut310/glow-tts/) for duration predictor training.
+      ```bash
+      # install monotonic_align for MAS training
+      cd monotonic_align && python setup.py build_ext --inplace && cd ..
+      # The following command trains a variant of PriorGrad which uses MAS for training the duration predictor.
+      CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/priorgrad.py \
+      --config configs/tts/lj/priorgrad.yaml \
+      --hparams dur=mas \
+      --exp_name priorgrad_mas \
+      --reset
+      ```
 
 6. Download pre-trained HiFi-GAN vocoder
     ```
@@ -86,12 +99,11 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
    --fast --fast_iter 12
    ```
    
-when `--infer --fast`, the model applies grid search of beta schedules with the specified number of `--fast_iter` steps for the given model checkpoint.
-
-2, 6, and 12 `--fast_iter` are officially supported. If the value higher than 12 is provided, the model uses a linear beta schedule. Note that the linear schedule is expected to perform worse.
-
-
-`--infer` without `--fast` performs slow sampling with the same `T` as the forward diffusion used in training.
+   When `--infer --fast`, the model applies grid search of beta schedules with the specified number of `--fast_iter` steps for the given model checkpoint.
+   
+   2, 6, and 12 `--fast_iter` are officially supported. If the value higher than 12 is provided, the model uses a linear beta schedule. Note that the linear schedule is expected to perform worse.
+   
+   `--infer` without `--fast` performs slow sampling with the same `T` as the forward diffusion used in training.
 
 ## Text-to-speech with user-given text
 
@@ -108,21 +120,24 @@ when `--infer --fast`, the model applies grid search of beta schedules with the 
 
 Samples are saved to `inference` folder created at `--exp_name`.
 
-when using `--fast`, the grid-searched reverse noise schedule file is required. Refer to the inference section of the examples above.  
+When using `--fast`, the grid-searched reverse noise schedule file is required. Refer to the inference section of the examples above.  
 
-### Optional feature: Monotonic alignment search (MAS) support
-Instead of MFA, FastSpeech 2 and PriorGrad also support Monotonic Alignment Search (MAS) used in [Glow-TTS](https://github.com/jaywalnut310/glow-tts/) for duration predictor training.
 
-```cd monotonic_align && python setup.py build_ext --inplace && cd ..```
 
-   ```bash
-   # The following command trains a variant of PriorGrad which uses MAS for training the duration predictor.
-   CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/priorgrad.py \
-   --config configs/tts/lj/priorgrad.yaml \
-   --hparams dur=mas \
-   --exp_name priorgrad_mas \
-   --reset
-   ```
+## Pretrained weights
+We release the pretrained weights of PriorGrad-acoustic models trained for 1M steps.
+
+If you are only interested in text-to-speech with `tasks/priorgrad_inference.py` from the provided checkpoints, you can download the pre-built statistics for inference. Using the pre-built statistics can skip building the dataset entirely.
+
+Note that you need to build the dataset (step 4 in the Quick Start section above) to use the checkpoints for other functionalities.
+
+Pre-built statistics (inference-only): [Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/ljspeech_hfg.zip) and unzip the file to `data/ljspeech_hfg`
+
+PriorGrad: [Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/priorgrad_am.zip) and unzip the file to `checkpoints/priorgrad`
+
+PriorGrad_MAS: [Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/priorgrad_am_mas.zip) and unzip the file to `checkpoints/priorgrad_mas`
+
+
 
 ## Reference
 If you find PriorGrad useful to your work, please consider citing the paper as below:

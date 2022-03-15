@@ -52,6 +52,12 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
 
 If `--fast` is not provided, the model performs slow sampling with the same `T` step forward diffusion used in training.
 
+## Pretrained weights
+We release the pretrained weights of PriorGrad-vocoder model trained for 3M steps.
+
+[Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/priorgrad_voc.zip) and unzip the file to `checkpoints/priorgrad`
+
+
 ## Reference
 If you find PriorGrad useful to your work, please consider citing the paper as below:
 
