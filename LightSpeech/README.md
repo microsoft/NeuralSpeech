@@ -7,6 +7,7 @@ pip install -r requirements.txt
 sudo apt-get update
 sudo apt-get install libsndfile1 -y
 ```
+Note: pytorch_lightning 0.6.0 may have a security issue(see [here](https://github.com/advisories/GHSA-r5qj-cvf9-p85h) and [here](https://github.com/PyTorchLightning/pytorch-lightning/pull/12212)), you can ignore it or try to solve it following this [patch](https://github.com/PyTorchLightning/pytorch-lightning/commit/8b7a12c52e52a06408e9231647839ddb4665e8ae).
 
 ## Quick Start
 
