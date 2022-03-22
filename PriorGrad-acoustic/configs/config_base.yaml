@@ -1,18 +1,41 @@
+#############
 # task
-data_dir: ''
+#############
 work_dir: '' # experiment directory.
 infer: false # infer
 seed: 1234
 debug: false
-
 
 #############
 # dataset
 #############
 test_num: 100
 indexed_ds: true
-endless_ds: false
 sort_by_len: true
+data_dir: ''
+raw_data_dir: ''
+dict_file: dict
+loud_norm: false
+endless_ds: true
+
+max_frames: 1550
+max_input_tokens: 200
+audio_num_mel_bins: 80
+audio_num_linear_bins: 513
+audio_sample_rate: 22050
+hop_size: 256  # For 22050Hz, 275 ~= 12.5 ms (0.0125 * sample_rate)
+win_size:  1024  # For 22050Hz, 1100 ~= 50 ms (If None, win_size: n_fft) (0.05 * sample_rate)
+fmin: 0  # Set this to 55 if your speaker is male! if female, 95 should help taking off noise. (To test depending on dataset. Pitch info: male~[65, 260], female~[100, 525])
+fmax: 8000  # To be increased/reduced depending on data.
+n_fft: 1024  # Extra window size is filled with 0 paddings to match this parameter
+min_level_db: -100
+ref_level_db: 20
+power: 1
+magnitude_power: 1
+griffin_lim_iters: 60
+num_spk: 1
+vocoder: hfg
+gen_wav_denoise: false
 
 #########
 # train and eval
@@ -26,10 +49,16 @@ check_val_every_n_epoch: 10
 val_check_interval: 2000
 max_epochs: 1000
 max_updates: 160000
-max_tokens: 31250
+max_tokens: 20000
 max_sentences: -1
-max_eval_tokens: -1
+max_eval_tokens: 60000
 max_eval_sentences: -1
 use_training: false
 use_amp: false
+train_set_name: 'train'
+valid_set_name: 'valid'
+test_set_name: 'test'
+vocoder_ckpt: ''
+profile_infer: false
+out_wav_norm: false
 

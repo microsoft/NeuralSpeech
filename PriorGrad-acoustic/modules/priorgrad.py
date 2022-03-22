@@ -1,6 +1,6 @@
 from modules.operations import *
-from modules.transformer_tts import TransformerEncoder
-from modules.tts_modules import DurationPredictor, LengthRegulator, PitchPredictor, EnergyPredictor
+from modules.tts_modules import DurationPredictor, LengthRegulator, PitchPredictor, EnergyPredictor,\
+    TransformerEncoderLayer, DEFAULT_MAX_SOURCE_POSITIONS
 from modules.diffusion import DiffDecoder
 from tts_utils.world_utils import f0_to_coarse_torch, restore_pitch
 import numpy as np
@@ -20,6 +20,74 @@ class AttrDict(dict):
     elif attrs is not None:
       raise NotImplementedError
     return self
+
+
+class TransformerEncoder(nn.Module):
+    def __init__(self, arch, embed_tokens, last_ln=True):
+        super().__init__()
+        self.arch = arch
+        self.num_layers = hparams['enc_layers']
+        self.hidden_size = hparams['hidden_size']
+        self.embed_tokens = embed_tokens
+        self.padding_idx = embed_tokens.padding_idx
+        embed_dim = embed_tokens.embedding_dim
+        self.dropout = hparams['dropout']
+        self.embed_scale = math.sqrt(embed_dim)
+        self.max_source_positions = DEFAULT_MAX_SOURCE_POSITIONS
+        self.embed_positions = SinusoidalPositionalEmbedding(
+            embed_dim, self.padding_idx,
+            init_size=self.max_source_positions + self.padding_idx + 1,
+        )
+        self.layers = nn.ModuleList([])
+        self.layers.extend([
+            TransformerEncoderLayer(self.arch[i], self.hidden_size, self.dropout)
+            for i in range(self.num_layers)
+        ])
+        self.last_ln = last_ln
+        if last_ln:
+            self.layer_norm = LayerNorm(embed_dim)
+
+    def forward_embedding(self, src_tokens):
+        # embed tokens and positions
+        embed = self.embed_scale * self.embed_tokens(src_tokens)
+        positions = self.embed_positions(src_tokens)
+        # x = self.prenet(x)
+        x = embed + positions
+        x = F.dropout(x, p=self.dropout, training=self.training)
+        return x, embed
+
+    def forward(self, src_tokens):
+        """
+
+        :param src_tokens: [B, T]
+        :return: {
+            'encoder_out': [T x B x C]
+            'encoder_padding_mask': [B x T]
+            'encoder_embedding': [B x T x C]
+            'attn_w': []
+        }
+        """
+        x, encoder_embedding = self.forward_embedding(src_tokens)
+
+        # B x T x C -> T x B x C
+        x = x.transpose(0, 1)
+
+        # compute padding mask
+        encoder_padding_mask = src_tokens.eq(self.padding_idx).data
+
+        # encoder layers
+        for layer in self.layers:
+            x = layer(x, encoder_padding_mask=encoder_padding_mask)
+
+        if self.last_ln:
+            x = self.layer_norm(x)
+            x = x * (1 - encoder_padding_mask.float()).transpose(0, 1)[..., None]
+        return {
+            'encoder_out': x,  # T x B x C
+            'encoder_padding_mask': encoder_padding_mask,  # B x T
+            'encoder_embedding': encoder_embedding,  # B x T x C
+            'attn_w': []
+        }
 
 
 class PriorGrad(nn.Module):

@@ -1,6 +1,6 @@
 import os, glob, re
 from tts_utils.hparams import hparams, set_hparams
-from tasks.fs2 import FastSpeechDataset
+from tasks.priorgrad import PriorGradDataset
 from tasks.priorgrad import PriorGradTask
 import torch
 import numpy as np
@@ -38,8 +38,8 @@ task.model.eval().cuda()
 # prepare hifi-gan vocoder
 task.prepare_vocoder_hfg()
 
-# define FastSpeechDataset. will only use the functions (text_to_phone and phone_to_prior) and not the actual test dataset
-dataset = FastSpeechDataset(hparams['data_dir'], task.phone_encoder, None, hparams, shuffle=False, infer_only=True)
+# define PriorGradDatset. will only use the functions (text_to_phone and phone_to_prior) and not the actual test dataset
+dataset = PriorGradDataset(hparams['data_dir'], task.phone_encoder, None, hparams, shuffle=False, infer_only=True)
 
 # inference requires phoneme input and the corresponding target_mean and target_std
 with open(hparams['inference_text'], 'r') as f:
