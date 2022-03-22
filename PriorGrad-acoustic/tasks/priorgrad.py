@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 
 from tts_utils.pl_utils import data_loader
 import os, sys
+import json
 from multiprocessing.pool import Pool
 from tqdm import tqdm
 
@@ -12,12 +13,14 @@ from modules.tts_modules import DurationPredictorLoss
 from tts_utils.hparams import hparams, set_hparams
 from tts_utils.plot import plot_to_figure, numpy_to_figure, spec_numpy_to_figure
 from tts_utils.world_utils import restore_pitch, process_f0
-
+from tts_utils.text_encoder import TokenTextEncoder
+from tts_utils.indexed_datasets import IndexedDataset
+from tts_utils import audio
+import torch.distributed as dist
 import numpy as np
 
-from tasks.fs2 import FastSpeechDataset
+from tasks.base_task import BaseTask, BaseDataset
 from modules.priorgrad import PriorGrad
-from tasks.transformer_tts import TransformerTtsTask
 import time
 
 import torch
@@ -25,36 +28,305 @@ import torch.optim
 import torch.utils.data
 import torch.nn.functional as F
 import tts_utils
+from g2p_en import G2p
 
 sys.path.append("hifi-gan")
 
 
-class PriorGradTask(TransformerTtsTask):
-    def __init__(self):
-        super(PriorGradTask, self).__init__()
+class RSQRTSchedule(object):
+    def __init__(self, optimizer):
+        super().__init__()
+        self.optimizer = optimizer
+        self.constant_lr = hparams['lr']
+        self.warmup_updates = hparams['warmup_updates']
+        self.hidden_size = hparams['hidden_size']
+        self.lr = hparams['lr']
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = self.lr
+        self.step(0)
+
+    def step(self, num_updates):
+        constant_lr = self.constant_lr
+        warmup = min(num_updates / self.warmup_updates, 1.0)
+        rsqrt_decay = max(self.warmup_updates, num_updates) ** -0.5
+        rsqrt_hidden = self.hidden_size ** -0.5
+        self.lr = max(constant_lr * warmup * rsqrt_decay * rsqrt_hidden, 1e-7)
+        for param_group in self.optimizer.param_groups:
+            param_group['lr'] = self.lr
+        return self.lr
+
+    def get_lr(self):
+        return self.optimizer.param_groups[0]['lr']
+
+
+class PriorGradDataset(BaseDataset):
+    """A dataset that provides helpers for batching."""
+    def __init__(self, data_dir, phone_encoder, prefix, hparams, shuffle=False, infer_only=False):
+        super().__init__(data_dir, prefix, hparams, shuffle)
+        self.phone_encoder = phone_encoder
+        self.infer_only = infer_only
+        if not self.infer_only:
+            self.data = None
+            self.idx2key = np.load(f'{self.data_dir}/{self.prefix}_all_keys.npy')
+            self.sizes = np.load(f'{self.data_dir}/{self.prefix}_lengths.npy')
+        self.num_spk = hparams['num_spk']
+        self.use_indexed_ds = hparams['indexed_ds']
+        self.indexed_bs = None
+        self.g2p = G2p()
+
+        if not self.infer_only:
+            # filter out items with no pitch
+            f0s = np.load(f'{self.data_dir}/{prefix}_f0s.npy', allow_pickle=True)
+            self.avail_idxs = [i for i, f0 in enumerate(f0s) if sum(f0) > 0]
+            self.sizes = [self.sizes[i] for i in self.avail_idxs]
+
+        # pitch stats
+        f0s = np.load(f'{self.data_dir}/train_f0s.npy', allow_pickle=True)
+        f0s = np.concatenate(f0s, 0)
+        f0s = f0s[f0s != 0]
+        hparams['f0_mean'] = self.f0_mean = np.mean(f0s).item()
+        hparams['f0_std'] = self.f0_std = np.std(f0s).item()
+
+        # phoneme stats loading
+        self.use_phone_stat = hparams['use_phone_stat'] if 'use_phone_stat' in hparams else False
+        if self.use_phone_stat:
+            # loads phoneme statistics. all datasets use training stats
+            print("INFO: using phoneme-level stats for PriorGrad modeling!")
+            self.phone_to_mean = torch.from_numpy(np.load(f'{self.data_dir}/train_phone_to_mean.npy', allow_pickle=True))
+            if hparams['use_std_norm']:
+                print("INFO: using 0~1 normalized stds!")
+                self.phone_to_std = torch.from_numpy(np.load(f'{self.data_dir}/train_phone_to_std_norm.npy', allow_pickle=True))
+            else:
+                print("INFO: using non-normalized stds!")
+                self.phone_to_std = torch.from_numpy(np.load(f'{self.data_dir}/train_phone_to_std.npy', allow_pickle=True))
+            print("INFO: phoneme mean stats: min {:.4f} max {:.4f} mean {:.4f} std {:.4f}".
+                  format(self.phone_to_mean.min(), self.phone_to_mean.max(), self.phone_to_mean.mean(), self.phone_to_mean.std()))
+            print("INFO: phoneme std stats: min {:.4f} max {:.4f} mean {:.4f} std {:.4f}".
+                  format(self.phone_to_std.min(), self.phone_to_std.max(), self.phone_to_std.mean(), self.phone_to_std.std()))
+            self.std_min = hparams['std_min']
+            print("INFO: minimum of std is set to {}".format(self.std_min))
+            self.std_max = hparams['std_max'] if 'std_max' in hparams else -1
+            if self.std_max != -1:
+                print("INFO: maximum of std is set to {}".format(self.std_max))
+            self.use_std_only = hparams['use_std_only'] if 'use_std_only' in hparams else False
+            if self.use_std_only:
+                print("WARNING: use_std_only is true. phone_to_mean is wiped to all zero, falling back to N(0, sigma)!")
+                self.phone_to_mean = torch.zeros_like(self.phone_to_mean)
+                print("INFO: phoneme mean stats: min {:.4f} max {:.4f} mean {:.4f} std {:.4f}".
+                      format(self.phone_to_mean.min(), self.phone_to_mean.max(), self.phone_to_mean.mean(), self.phone_to_mean.std()))
+            self.use_mean_only = hparams['use_mean_only'] if 'use_mean_only' in hparams else False
+            if self.use_mean_only:
+                print("WARNING: use_mean_only is true. phone_to_std is wiped to all one, falling back to N(mu, I)!")
+                self.phone_to_std = torch.ones_like(self.phone_to_std)
+                print("INFO: phoneme std stats: min {:.4f} max {:.4f} mean {:.4f} std {:.4f}".
+                      format(self.phone_to_std.min(), self.phone_to_std.max(), self.phone_to_std.mean(), self.phone_to_std.std()))
+
+    def text_to_phone(self, txt):
+        # function that converts the user-given text to phoneme sequence used in PriorGrad-acoustic
+        # the implementation mirrors datasets/tts/lj/prepare.py and datasets/tts/lj/gen_fs2_p.py
+        # input: text string
+        # output: encoded phoneme string
+        phs = [p.replace(" ", "|") for p in self.g2p(txt)]
+        ph = " ".join(phs)
+        ph = "<UNK> " + ph + " <EOS>"
+        phone_encoded = self.phone_encoder.encode(ph)
+        return phone_encoded
+
+    def phone_to_prior(self, phone):
+        # TTS inference function that returns prior mean and std given the user-given phoneme sequence
+        # input: phoneme sequence with shape [T]
+        # output: phoneme-level prior mean and std with shape [T, num_mels]
+        assert self.use_phone_stat is True, "phone_to_prior does not support the model with use_phone_stat=False."
+        spec_mean = torch.index_select(self.phone_to_mean, 0, phone)
+        spec_std = torch.index_select(self.phone_to_std, 0, phone)
+        return spec_mean, spec_std
+
+    def _get_item(self, index):
+        if not self.use_indexed_ds:
+            key = self.idx2key[index]
+            item = np.load(f'{self.data_dir}/{self.prefix}/{key}.npy', allow_pickle=True).item()
+        else:
+            if self.indexed_bs is None:
+                self.indexed_bs = IndexedDataset(f'{self.data_dir}/{self.prefix}')
+            item = self.indexed_bs[index]
+        return item
+
+    def __getitem__(self, index):
+        hparams = self.hparams
+        index = self.avail_idxs[index]
+        key = self.idx2key[index]
+        item = self._get_item(index)
+        spec = torch.Tensor(item['mel'])
+        energy = (spec.exp() ** 2).sum(-1).sqrt()[:hparams['max_frames']]
+        mel2ph = torch.LongTensor(item['mel2ph'])[:hparams['max_frames']]
+        f0, uv = process_f0(item["f0"], hparams)
+        phone = torch.LongTensor(item['phone'][:hparams['max_input_tokens']])
+
+        sample = {
+            "id": index,
+            "utt_id": key,
+            "text": item['txt'],
+            "source": phone,
+            "target": spec[:hparams['max_frames']],
+            "pitch": torch.LongTensor(item.get("pitch"))[:hparams['max_frames']],
+            "energy": energy,
+            "f0": f0[:hparams['max_frames']],
+            "uv": uv[:hparams['max_frames']],
+            "mel2ph": mel2ph,
+        }
+
+        if self.use_phone_stat:
+            spec_mean = torch.index_select(self.phone_to_mean, 0, phone)
+            spec_std = torch.index_select(self.phone_to_std, 0, phone)
+            sample["target_mean"] = spec_mean
+            sample["target_std"] = spec_std
+
+        if self.num_spk > 1:
+            sample["spk_id"] = item['spk_id']
+            sample["spk_embed"] = item['spk_embed']
+        return sample
+
+    def collater(self, samples):
+        if len(samples) == 0:
+            return {}
+        pad_idx = self.phone_encoder.pad()
+        id = torch.LongTensor([s['id'] for s in samples])
+        utt_ids = [s['utt_id'] for s in samples]
+        text = [s['text'] for s in samples]
+
+        src_tokens = tts_utils.collate_1d([s['source'] for s in samples], pad_idx)
+        f0 = tts_utils.collate_1d([s['f0'] for s in samples], -200) if self.hparams['use_pitch_embed'] else None
+        uv = tts_utils.collate_1d([s['uv'] for s in samples]) if self.hparams['use_pitch_embed'] else None
+        energy = tts_utils.collate_1d([s['energy'] for s in samples], pad_idx) if self.hparams['use_energy_embed'] else None
+        mel2ph = tts_utils.collate_1d([s['mel2ph'] for s in samples], pad_idx)
+        target = tts_utils.collate_2d([s['target'] for s in samples], pad_idx)
+        prev_output_mels = tts_utils.collate_2d([s['target'] for s in samples], pad_idx, shift_right=True)
+
+        src_lengths = torch.LongTensor([s['source'].numel() for s in samples])
+        target_lengths = torch.LongTensor([s['target'].shape[0] for s in samples])
+        ntokens = sum(len(s['source']) for s in samples)
+        nmels = sum(len(s['target']) for s in samples)
+
+        batch = {
+            'id': id,
+            'utt_id': utt_ids,
+            'nsamples': len(samples),
+            'ntokens': ntokens,
+            'nmels': nmels,
+            'text': text,
+            'src_tokens': src_tokens,
+            'mel2ph': mel2ph,
+            'src_lengths': src_lengths,
+            'targets': target,
+            'energy': energy,
+            'target_lengths': target_lengths,
+            'prev_output_mels': prev_output_mels,
+            'pitch': f0,
+            'uv': uv,
+        }
+
+        if self.use_phone_stat:
+            target_mean = tts_utils.collate_2d([s['target_mean'] for s in samples], pad_idx)
+            target_std = tts_utils.collate_2d([s['target_std'] for s in samples], pad_idx)
+            batch['targets_mean'] = target_mean
+            # fill one instead of zero for target_std: zero value will cause NaN for scaled_mse_loss
+            target_std[target_std == 0] = 1
+            target_std[target_std <= self.std_min] = self.std_min
+            if self.std_max != -1:
+                target_std[target_std >= self.std_max] = self.std_max
+            batch['targets_std'] = target_std
+
+        if self.num_spk > 1:
+            spk_ids = torch.LongTensor([s['spk_id'] for s in samples])
+            spk_embed = torch.FloatTensor([s['spk_embed'] for s in samples])
+            batch['spk_ids'] = spk_ids
+            batch['spk_embed'] = spk_embed
+        return batch
+
+
+class PriorGradTask(BaseTask):
+    def __init__(self, *args, **kwargs):
+        self.arch = hparams['arch']
+        if isinstance(self.arch, str):
+            self.arch = list(map(int, self.arch.strip().split()))
+        if self.arch is not None:
+            self.num_heads = tts_utils.get_num_heads(self.arch[hparams['enc_layers']:])
+        self.vocoder = None
+        self.phone_encoder = self.build_phone_encoder(hparams['data_dir'])
+        self.padding_idx = self.phone_encoder.pad()
+        self.eos_idx = self.phone_encoder.eos()
+        self.seg_idx = self.phone_encoder.seg()
+        self.saving_result_pool = None
+        self.saving_results_futures = None
+        self.stats = {}
+        super().__init__(*args, **kwargs)
+        # super(PriorGradTask, self).__init__()
         self.dur_loss_fn = DurationPredictorLoss()
         self.mse_loss_fn = torch.nn.MSELoss()
         self.use_phone_stat = hparams['use_phone_stat'] if 'use_phone_stat' in hparams else False
 
     @data_loader
     def train_dataloader(self):
-        train_dataset = FastSpeechDataset(hparams['data_dir'], self.phone_encoder,
+        train_dataset = PriorGradDataset(hparams['data_dir'], self.phone_encoder,
                                           hparams['train_set_name'], hparams, shuffle=True)
         return self.build_dataloader(train_dataset, True, self.max_tokens, self.max_sentences,
                                      endless=hparams['endless_ds'])
 
     @data_loader
     def val_dataloader(self):
-        valid_dataset = FastSpeechDataset(hparams['data_dir'], self.phone_encoder,
+        valid_dataset = PriorGradDataset(hparams['data_dir'], self.phone_encoder,
                                           hparams['valid_set_name'], hparams,
                                           shuffle=False)
         return self.build_dataloader(valid_dataset, False, self.max_eval_tokens, self.max_eval_sentences)
 
     @data_loader
     def test_dataloader(self):
-        test_dataset = FastSpeechDataset(hparams['data_dir'], self.phone_encoder,
+        test_dataset = PriorGradDataset(hparams['data_dir'], self.phone_encoder,
                                          hparams['test_set_name'], hparams, shuffle=False)
         return self.build_dataloader(test_dataset, False, self.max_eval_tokens, self.max_eval_sentences)
+
+    def build_dataloader(self, dataset, shuffle, max_tokens=None, max_sentences=None,
+                         required_batch_size_multiple=-1, endless=False):
+        if required_batch_size_multiple == -1:
+            required_batch_size_multiple = torch.cuda.device_count()
+
+        def shuffle_batches(batches):
+            np.random.shuffle(batches)
+            return batches
+
+        if max_tokens is not None:
+            max_tokens *= torch.cuda.device_count()
+        if max_sentences is not None:
+            max_sentences *= torch.cuda.device_count()
+        indices = dataset.ordered_indices()
+        batch_sampler = tts_utils.batch_by_size(
+            indices, dataset.num_tokens, max_tokens=max_tokens, max_sentences=max_sentences,
+            required_batch_size_multiple=required_batch_size_multiple,
+        )
+
+        if shuffle:
+            batches = shuffle_batches(list(batch_sampler))
+            if endless:
+                batches = [b for _ in range(1000) for b in shuffle_batches(list(batch_sampler))]
+        else:
+            batches = batch_sampler
+            if endless:
+                batches = [b for _ in range(1000) for b in batches]
+        num_workers = dataset.num_workers
+        if self.trainer.use_ddp:
+            num_replicas = dist.get_world_size()
+            rank = dist.get_rank()
+            batches = [x[rank::num_replicas] for x in batches if len(x) % num_replicas == 0]
+        return torch.utils.data.DataLoader(dataset,
+                                           collate_fn=dataset.collater,
+                                           batch_sampler=batches,
+                                           num_workers=num_workers,
+                                           pin_memory=False)
+
+    def build_phone_encoder(self, data_dir):
+        phone_list_file = os.path.join(data_dir, 'phone_set.json')
+        phone_list = json.load(open(phone_list_file))
+        return TokenTextEncoder(None, vocab_list=phone_list)
 
     def build_model(self):
         arch = self.arch
@@ -62,6 +334,17 @@ class PriorGradTask(TransformerTtsTask):
         print("encoder params:{}".format(sum(p.numel() for p in model.encoder.parameters() if p.requires_grad)))
         print("decoder params:{}".format(sum(p.numel() for p in model.decoder.parameters() if p.requires_grad)))
         return model
+
+    def build_scheduler(self, optimizer):
+        return RSQRTSchedule(optimizer)
+
+    def build_optimizer(self, model):
+        self.optimizer = optimizer = torch.optim.AdamW(
+            model.parameters(),
+            lr=hparams['lr'],
+            betas=(hparams['optimizer_adam_beta1'], hparams['optimizer_adam_beta2']),
+            weight_decay=hparams['weight_decay'])
+        return optimizer
 
     def _training_step(self, sample, batch_idx, _):
         input = sample['src_tokens']  # [B, T_t]
@@ -555,6 +838,54 @@ class PriorGradTask(TransformerTtsTask):
                 print('gen_wav_time: ', self.stats['gen_wav_time'])
 
         return {}
+
+    @staticmethod
+    def save_result(wav_out, mel, prefix, utt_id, text, gen_dir,
+                    pitch=None, noise_spec=None, alignment=None, str_phs=None,
+                    phoneme=None, uv=None):
+        base_fn = f'[{prefix}][{utt_id}]'
+        base_fn += text.replace(":", "%3A")[:80]
+        audio.save_wav(wav_out, f'{gen_dir}/wavs/{base_fn}.wav', hparams['audio_sample_rate'],
+                       norm=hparams['out_wav_norm'])
+        audio.plot_spec(mel.T, f'{gen_dir}/spec_plot/{base_fn}.png')
+        with open(f'{gen_dir}/text/{base_fn}.txt', 'w') as f:
+            f.write(text)
+        torch.save(mel.T, f'{gen_dir}/spec/{base_fn}.pt')
+        if pitch is not None:
+            audio.plot_curve(pitch, f'{gen_dir}/pitch_plot/{base_fn}.png', 50, 500)
+
+        if alignment is not None:
+            fig, ax = plt.subplots(figsize=(12, 16))
+            im = ax.imshow(alignment, aspect='auto', origin='lower',
+                           interpolation='none')
+            decoded_txt = str_phs.split(" ")
+            ax.set_yticks(np.arange(len(decoded_txt)))
+            ax.set_yticklabels(list(decoded_txt), fontsize=6)
+            fig.colorbar(im, ax=ax)
+            fig.savefig(f'{gen_dir}/attn_plot/{base_fn}_attn.png', format='png')
+            plt.close()
+        if phoneme is not None:
+            torch.save(phoneme, f'{gen_dir}/phoneme/{base_fn}.pt')
+        if uv is not None:
+            torch.save(uv, f'{gen_dir}/uv/{base_fn}.pt')
+
+    def test_end(self, outputs):
+        self.saving_result_pool.close()
+        [f.get() for f in tqdm(self.saving_results_futures)]
+        self.saving_result_pool.join()
+        return {}
+
+    ##########
+    # utils
+    ##########
+    def remove_padding(self, x, padding_idx=0):
+        return tts_utils.remove_padding(x, padding_idx)
+
+    def weights_nonzero_speech(self, target):
+        # target : B x T x mel
+        # Assign weight 1.0 to all labels except for padding (id=0).
+        dim = target.size(-1)
+        return target.abs().sum(-1, keepdim=True).ne(0).float().repeat(1, 1, dim)
 
 
 if __name__ == '__main__':

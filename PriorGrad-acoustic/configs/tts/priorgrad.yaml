@@ -1,14 +1,27 @@
-base_config: configs/tts/transformer_tts.yaml
+base_config: configs/config_base.yaml
 
 # data
 dict_file: dict
 
+#########
 # model
-hidden_size: 256
-arch: '8 8 8 8 8 8 8 8' # no conv1d
+#########
 dropout: 0.2
-
+arch: '8 8 8 8 8 8 8 8'
+enc_layers: 4
+hidden_size: 256
+prenet_hidden_size: 32
+stop_token_weight: 5.0
+optimizer_adam_beta1: 0.9
+optimizer_adam_beta2: 0.98
+weight_decay: 0
+clip_grad_norm: 1
+attn_constraint: true
+enc_ffn_kernel_size: 9
+ffn_padding: 'SAME'
+use_new_ffn: true
 predictor_sg: true
+
 # duration
 predictor_hidden: 256
 dur_predictor_kernel: 3
@@ -36,8 +49,13 @@ lambda_uv: 1.0
 lambda_energy: 1.0
 mel_loss: l1
 
+# reference encoder and speaker embedding
+use_spk_embed: false
+use_spk_id: false
+
 # train and eval
 pretrain_fs_ckpt: ''
+lr: 2.0
 warmup_updates: 2000
 max_tokens: 28000
 max_sentences: -1
