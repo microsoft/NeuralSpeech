@@ -6,7 +6,12 @@ This repository is an official PyTorch implementation of the paper:
 >[[arxiv]](https://arxiv.org/abs/2106.06406)
 >
 
-This repository contains a vocoder model (mel-spectrogram conditional waveform synthesis) presented in PriorGrad.
+![](./pics/priorgrad_voc.png)
+
+This repository contains a vocoder model (mel-spectrogram conditional waveform synthesis) presented in PriorGrad. PriorGrad vocoder features the state-of-the-art audio quality among the likelihood-based neural vocoders, with fast training and inference speed. 
+
+## Abstract
+Denoising diffusion probabilistic models have been recently proposed to generate high-quality samples by estimating the gradient of the data density. The framework assumes the prior noise as a standard Gaussian distribution, whereas the corresponding data distribution may be more complicated than the standard Gaussian distribution, which potentially introduces inefficiency in denoising the prior noise into the data sample because of the discrepancy between the data and the prior. In this paper, we propose PriorGrad to improve the efficiency of the conditional diffusion model (for example, a vocoder using a mel-spectrogram as the condition) by applying an adaptive prior derived from the data statistics based on the conditional information. We formulate the training and sampling procedures of PriorGrad and demonstrate the advantages of an adaptive prior through a theoretical analysis. Focusing on the audio domain, we consider the recently proposed diffusion-based audio generative models based on both the spectral and time domains and show that PriorGrad achieves faster convergence and superior performance, leading to an improved perceptual quality and tolerance to a smaller network capacity, and thereby demonstrating the efficiency of a data-dependent adaptive prior.
 
 ## Demo
 
