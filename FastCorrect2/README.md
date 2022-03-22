@@ -4,6 +4,9 @@
 [FastCorrect 2: Fast Error Correction on Multiple Candidates for Automatic Speech Recognition](https://arxiv.org/abs/2109.14420), by Yichong Leng, Xu Tan, Rui Wang, Linchen Zhu, Jin Xu, Wenjie Liu, Linquan Liu, Tao Qin, Xiang-Yang Li, Edward Lin, Tie-Yan Liu,
 is a novel non-autoregressive error correction method for automatic speech recognition. It uses multiple candidates from ASR beam search results to correct errors.
 
+<!-- ![img](../img/FastCorrect2.PNG)  ![img](../img/FastCorrect2.PNG)-->
+<p align="center"><img src="../img/FastCorrect2.PNG" width="500"><br/> Model structure of FastCorrect 2 </p>
+
 ## Dependencies
 Currently we implement FastCorrect on the [fairseq-0.10.1](https://github.com/pytorch/fairseq/tree/v0.10.1). You can refer to fairseq installation.
 Some dependencies are as follows:

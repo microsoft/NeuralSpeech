@@ -4,6 +4,9 @@
 [FastCorrect: Fast Error Correction with Edit Alignment for Automatic Speech Recognition](https://arxiv.org/abs/2105.03842), by Yichong Leng, Xu Tan, Linchen Zhu, Jin Xu, Renqian Luo, Linquan Liu, Tao Qin, Xiang-Yang Li, Ed Lin and Tie-Yan Liu,
 is a novel non-autoregressive error correction method for automatic speech recognition. It use an encoder and a length predictor to detect errors and a decoder to correct errors.
 
+<!-- ![img](../img/FastCorrect.PNG)  ![img](../img/FastCorrect.PNG)-->
+<p align="center"><img src="../img/FastCorrect.PNG" width="600"><br/> Model structure of FastCorrect </p>
+
 ## Dependencies
 Currently we implement FastCorrect on the [fairseq-0.10.1](https://github.com/pytorch/fairseq/tree/v0.10.1). You can refer to fairseq installation.
 Some dependencies are as follows:
