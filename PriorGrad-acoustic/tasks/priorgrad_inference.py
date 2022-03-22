@@ -38,7 +38,7 @@ task.model.eval().cuda()
 # prepare hifi-gan vocoder
 task.prepare_vocoder_hfg()
 
-# define PriorGradDatset. will only use the functions (text_to_phone and phone_to_prior) and not the actual test dataset
+# define PriorGradDataset. will only use the functions (text_to_phone and phone_to_prior) and not the actual test dataset
 dataset = PriorGradDataset(hparams['data_dir'], task.phone_encoder, None, hparams, shuffle=False, infer_only=True)
 
 # inference requires phoneme input and the corresponding target_mean and target_std
