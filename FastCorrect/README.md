@@ -1,7 +1,7 @@
 # FastCorrect
 
 
-[FastCorrect: Fast Error Correction with Edit Alignment for Automatic Speech Recognition](https://arxiv.org/abs/2105.03842), by Yichong Leng, Xu Tan, Linchen Zhu, Jin Xu, Renqian Luo, Linquan Liu, Tao Qin, Xiang-Yang Li, Ed Lin and Tie-Yan Liu,
+[FastCorrect: Fast Error Correction with Edit Alignment for Automatic Speech Recognition](https://arxiv.org/abs/2105.03842), by Yichong Leng, Xu Tan, Linchen Zhu, Jin Xu, Renqian Luo, Linquan Liu, Tao Qin, Xiang-Yang Li, Ed Lin and Tie-Yan Liu in *NeurIPS 2021*,
 is a novel non-autoregressive error correction method for automatic speech recognition. It use an encoder and a length predictor to detect errors and a decoder to correct errors.
 
 <!-- ![img](../img/FastCorrect.PNG)  ![img](../img/FastCorrect.PNG)-->

@@ -1,7 +1,7 @@
 # FastCorrect 2
 
 
-[FastCorrect 2: Fast Error Correction on Multiple Candidates for Automatic Speech Recognition](https://arxiv.org/abs/2109.14420), by Yichong Leng, Xu Tan, Rui Wang, Linchen Zhu, Jin Xu, Wenjie Liu, Linquan Liu, Tao Qin, Xiang-Yang Li, Edward Lin, Tie-Yan Liu,
+[FastCorrect 2: Fast Error Correction on Multiple Candidates for Automatic Speech Recognition](https://arxiv.org/abs/2109.14420), by Yichong Leng, Xu Tan, Rui Wang, Linchen Zhu, Jin Xu, Wenjie Liu, Linquan Liu, Tao Qin, Xiang-Yang Li, Edward Lin, Tie-Yan Liu in *Findings of EMNLP 2021*,
 is a novel non-autoregressive error correction method for automatic speech recognition. It uses multiple candidates from ASR beam search results to correct errors.
 
 <!-- ![img](../img/FastCorrect2.PNG)  ![img](../img/FastCorrect2.PNG)-->
