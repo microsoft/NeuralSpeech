@@ -19,7 +19,7 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
 
 ## Quick Start and Examples
 
-1. Navigate to PriorGrad-acoustic root and install dependencies
+1. Navigate to PriorGrad-vocoder root and install dependencies
    ```bash
    # the codebase has been tested on PyTorch 1.8.2 LTS and 1.10.2 conda binaries
    pip install -r requirements.txt
