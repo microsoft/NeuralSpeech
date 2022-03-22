@@ -2,9 +2,7 @@
 
 
 [FastCorrect: FastCorrect: Fast Error Correction with Edit Alignment for Automatic Speech Recognition](https://arxiv.org/abs/2105.03842), by Yichong Leng, Xu Tan, Linchen Zhu, Jin Xu, Renqian Luo, Linquan Liu, Tao Qin, Xiang-Yang Li, Ed Lin and Tie-Yan Liu,
-is a novel non-autoregressive correction method for automatic speech recognition. It use a length predictor to detect errors and a decoder to correct errors.
-
-The current codebase supports correction on AISHELL-1, which is based on Fairseq. The code for WER calculation is from Espnet.
+is a novel non-autoregressive error correction method for automatic speech recognition. It use an encoder and a length predictor to detect errors and a decoder to correct errors.
 
 ## Dependencies
 Currently we implement FastCorrect on the [fairseq-0.10.1](https://github.com/pytorch/fairseq/tree/v0.10.1). You can refer to fairseq installation.
