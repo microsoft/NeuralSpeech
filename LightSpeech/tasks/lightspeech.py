@@ -531,10 +531,10 @@ class LightSpeechTask(BaseTask):
                     ckpts = glob.glob(f'{base_dir}/checkpoint-*steps.pkl')
                     ckpt = sorted(ckpts, key=
                     lambda x: int(re.findall(f'{base_dir}/checkpoint-(\d+)steps.pkl', x)[0]))[-1]
-                    config_path = f'{base_dir}/config.yaml'
+                    config_path = f'{base_dir}/config.yml'
                 else:
                     base_dir = hparams['vocoder_ckpt']
-                    config_path = f'{base_dir}/config.yaml'
+                    config_path = f'{base_dir}/config.yml'
                     ckpt = sorted(glob.glob(f'{base_dir}/model_ckpt_steps_*.ckpt'), key=
                     lambda x: int(re.findall(f'{base_dir}/model_ckpt_steps_(\d+).ckpt', x)[0]))[-1]
                 print('| load wavegan: ', ckpt)

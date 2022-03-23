@@ -24,8 +24,8 @@ cd ../../
 python datasets/tts/lj/prepare.py
 ```
 ### 2. Forced alignment
+We use Montreal-Forced-Aligner v1.0.0. You can get it from [github link](https://github.com/MontrealCorpusTools/Montreal-Forced-Aligner/releases/tag/v1.0.0)
 ```bash
-# Download MFA first: https://montreal-forced-aligner.readthedocs.io/en/stable/aligning.html
 # unzip to montreal-forced-aligner
 ./montreal-forced-aligner/bin/mfa_train_and_align data/raw/LJSpeech-1.1/mfa_input data/raw/LJSpeech-1.1/dict_mfa.txt data/raw/LJSpeech-1.1/mfa_outputs -t ./montreal-forced-aligner/tmp -j 24
 ```
@@ -52,8 +52,6 @@ CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/lightspeech.py --config configs
 ```
 The generated output will be under `checkpoints/lightspeech/generated_[step]` folder.
 
-### 7. Trained Checkpoint
-We release our trained model checkpoint [here](https://msramllasc.blob.core.windows.net/modelrelease/LightSpeech/model_ckpt_steps_84000.ckpt). You can donwnload it and place it under `checkpoints/lightspeech`. Then you can do the inference following [step 6](#6-inference).
 
 You can refer to [https://speechresearch.github.io/lightspeech/](https://speechresearch.github.io/lightspeech/) for generated audio samples.
 
