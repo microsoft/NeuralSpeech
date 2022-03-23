@@ -1,6 +1,8 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
+# Reference: https://github.com/khornlund/pytorch-balanced-sampler
+
 import torch
 import torch.utils.data
 import random
@@ -10,7 +12,6 @@ import logging
 import numpy as np
 from torch.utils.data.sampler import BatchSampler, WeightedRandomSampler
 
-# https://github.com/khornlund/pytorch-balanced-sampler
 class BalancedBatchSampler(torch.utils.data.sampler.Sampler):
     '''
     https://github.com/galatolofederico/pytorch-balanced-batch/blob/master/sampler.py
