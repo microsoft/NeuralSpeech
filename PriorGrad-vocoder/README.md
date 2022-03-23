@@ -67,6 +67,10 @@ We release the pretrained weights of PriorGrad-vocoder model trained on LJSpeech
 
 [Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/priorgrad_voc.zip) and unzip the file to `checkpoints/priorgrad`
 
+The codebase defines `weights.pt` as a symbolic link of the latest checkpoint.
+Restore the link with `ln -s we
+ights-3000000.pt weights.pt` to continue training (`__main__.py`), or perform inference (`inference.py`) without specifying `--step`
+
 
 ## Reference
 If you find PriorGrad useful to your work, please consider citing the paper as below:
