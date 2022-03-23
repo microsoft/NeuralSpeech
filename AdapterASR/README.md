@@ -50,16 +50,16 @@ Following EasyEspnet, you can also perform distributed training which is much fa
 CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 train.py --dist_train true --root_path commonvoice/asr1 --dataset ar --config config/adapter_example.yaml
 ```
 
-## Acknowledgement
-
-- ESPNet: https://github.com/espnet/espnet
-- EasyEspnet: https://github.com/jindongwang/EasyEspnet
 
 ## Contact
 
-- [Wenxin Hou](https://houwenxin.github.io/): houwx001@gmail.com
+- [Wenxin Hou](https://houwx.net/): houwx001@gmail.com
 - [Jindong Wang](http://www.jd92.wang/): jindongwang@outlook.com
 
+
+## Code of Conduct
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct),
+[trademark notice](https://docs.opensource.microsoft.com/releasing/), and [security reporting instructions](https://docs.opensource.microsoft.com/releasing/maintain/security/).
 
 
 ## References

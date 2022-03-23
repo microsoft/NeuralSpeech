@@ -21,7 +21,7 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
 
 1. Navigate to PriorGrad-acoustic root, install dependencies, and initialize submodule ([HiFi-GAN](https://github.com/jik876/hifi-gan) vocoder)
    ```bash
-   # the codebase has been tested on PyTorch 1.8.2 LTS and 1.10.2 conda binaries
+   # the codebase has been tested on Python 3.8 with PyTorch 1.8.2 LTS and 1.10.2 conda binaries
    pip install -r requirements.txt
    git submodule init
    git submodule update
