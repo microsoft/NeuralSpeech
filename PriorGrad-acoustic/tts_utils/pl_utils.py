@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import matplotlib
 from torch.nn import DataParallel
 from torch.nn.parallel import DistributedDataParallel

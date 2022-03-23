@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import matplotlib.pyplot as plt
 import numpy as np
 

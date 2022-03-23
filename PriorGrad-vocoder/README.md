@@ -21,7 +21,7 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
 
 1. Navigate to PriorGrad-vocoder root and install dependencies
    ```bash
-   # the codebase has been tested on PyTorch 1.8.2 LTS and 1.10.2 conda binaries
+   # the codebase has been tested on Python 3.8 with PyTorch 1.8.2 LTS and 1.10.2 conda binaries
    pip install -r requirements.txt
    ```
 
@@ -32,18 +32,21 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
    ```bash
    # the following command trains PriorGrad-vocoder with default parameters defined in params.py
    # need to specify model_dir, data_root, and training filelist
-   python __main__.py \
+   CUDA_VISIBLE_DEVICES=0 python __main__.py \
    checkpoints/priorgrad \
    /path/to/your/LJSpeech-1.1 \
    filelists/train.txt
    ```
+   The training script first builds the training set statistics and saves it to `stats_priorgrad` folder created at `data_root` (`/path/to/your/LJSpeech-1.1` in the above example).
+
+   It also automatically saves the hyperparameter file (`params.py`), renamed as `params_saved.py`, to `model_dir` at runtime to be used for inference.
 
 4. Inference (fast mode with T=6)
    ```bash
    # the following command performs test set inference of PriorGrad-vocoder with default parameters defined in params.py
    # inference requires the automatically generated params_saved.py during training, which is located at model_dir. 
    # need to specify model_dir, data_root, and test filelist
-   python inference.py \
+   CUDA_VISIBLE_DEVICES=0 python inference.py \
    checkpoints/priorgrad \
    /path/to/your/LJSpeech-1.1 \
    filelists/test.txt \
@@ -58,9 +61,16 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
    If `--fast` is not provided, the model performs slow sampling with the same `T` step forward diffusion used in training.
 
 ## Pretrained weights
-We release the pretrained weights of PriorGrad-vocoder model trained for 3M steps.
+We release the pretrained weights of PriorGrad-vocoder model trained on LJSpeech for 3M steps.
 
-[Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/priorgrad_voc.zip) and unzip the file to `checkpoints/priorgrad`
+`stats_priorgrad` saved at `data_root` is required to use the checkpoint for training and inference. Refer to the step 3 of the Quick Start and Examples above.
+
+Pre-built statistics (LJSpeech): [Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/stats_priorgrad.zip) and unzip the file to the root of the dataset (`/path/to/your/LJSpeech-1.1` in the above example). 
+
+PriorGrad: [Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/priorgrad_voc.zip) and unzip the file to `checkpoints/priorgrad`
+
+The codebase defines `weights.pt` as a symbolic link of the latest checkpoint.
+Restore the link with `ln -s weights-3000000.pt weights.pt` to continue training (`__main__.py`), or perform inference (`inference.py`) without specifying `--step`
 
 
 ## Reference

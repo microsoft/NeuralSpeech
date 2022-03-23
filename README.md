@@ -6,6 +6,8 @@ Currently this repo covers several research work:
 * Automatic Speech Recognition
   + [FastCorrect, NeurIPS 2021](https://arxiv.org/pdf/2105.03842.pdf) 
   + [FastCorrect 2, EMNLP 2021 Findings](https://arxiv.org/pdf/2109.14420.pdf)
+  + [CMatch for ASR, INTERSPEECH 2021](https://arxiv.org/pdf/2104.07491.pdf)
+  + [Adapter for ASR, TASLP 2022](https://arxiv.org/pdf/2105.11905.pdf)
 * Text to Speech
   + [LightSpeech, ICASSP 2021](https://arxiv.org/pdf/2102.04040.pdf)
   + [PriorGrad, ICLR 2022](https://arxiv.org/pdf/2106.06406.pdf)
@@ -23,6 +25,8 @@ If you find NeuralSpeech project useful in your work, you can cite the following
 * *FastCorrect 2: Fast Error Correction on Multiple Candidates for Automatic Speech Recognition*, Yichong Leng, Xu Tan, Rui Wang, Linchen Zhu, Jin Xu, Wenjie Liu, Linquan Liu, Tao Qin, Xiang-Yang Li, Ed Lin, Tie-Yan Liu, Findings of EMNLP 2021.
 * *LightSpeech: Lightweight and Fast Text to Speech with Neural Architecture Search*, Renqian Luo, Xu Tan, Rui Wang, Tao Qin, Jinzhu Li, Sheng Zhao, Enhong Chen and Tie-Yan Liu, ICASSP 2021.
 * *PriorGrad: Improving Conditional Denoising Diffusion Models with Data-Dependent Adaptive Prior*, Sang-gil Lee, Heeseung Kim, Chaehun Shin, Xu Tan, Chang Liu, Qi Meng, Tao Qin, Wei Chen, Sungroh Yoon, Tie-Yan Liu, ICLR 2022.
+* [CMatch] *Cross-domain Speech Recognition with Unsupervised Character-level Distribution Matching*, Wenxin Hou, Jindong Wang, Xu Tan, Tao Qin, Takahiro Shinozaki. Interspeech 2021.
+* [Adapter] *Exploiting Adapters for Cross-lingual Low-resource Speech Recognition*, Wenxin Hou, Han Zhu, Yidong Wang, Jindong Wang, Tao Qin, Renjun Xu, Takahiro Shinozaki. IEEE/ACM Transactions on Audio, Speech, and Language Processing (TASLP) 2022.
 
 
 ## Contributing

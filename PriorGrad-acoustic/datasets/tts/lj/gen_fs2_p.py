@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import os
 
 os.environ["OMP_NUM_THREADS"] = "1"
