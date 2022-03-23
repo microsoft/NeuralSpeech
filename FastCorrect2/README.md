@@ -47,7 +47,7 @@ We can pretrain the FastCorrect 2 model on pseudo paired data with `runs/train_p
 
 Then we fine-tune the FastCorrect 2 model on real paired data with `runs/train_ft.sh`.
 
-The fine-tuning data of FastCorrect 2 on AISHELL-1 can be found in [here](https://msramllasc.blob.core.windows.net/modelrelease/FastCorrect_training_data_aishell.tar.gz).
+The fine-tuning data of FastCorrect 2 on AISHELL-1 can be found in [here](https://msramllasc.blob.core.windows.net/modelrelease/FastCorrect2_training_data_aishell.tar.gz).
 
 We load the pretrained model with the help of `--restore-file` flag.
 
