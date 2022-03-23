@@ -253,8 +253,13 @@ def cal_charwer(hypo_string, ref_string):
 def cal_charwer_zh(hypo_string, ref_string):
     return 0
 
+# The format of gramx.txt is <space-split ngram token> \t frequency
+# such as: 
+# good morning\t1000\n
+# the gramx.txt can be calculated based on unpaired text data.
+
 #gram2_path = '<path-to-gram2>/gram2.txt'
-print("Loading gram2:", gram2_path)
+# print("Loading gram2:", gram2_path)
 gram2_dict = {}
 #with open(gram2_path, 'r',
 #          encoding='utf-8') as infile:
@@ -264,7 +269,7 @@ gram2_dict = {}
 #            print(i, 'loaded!')
 
 #gram3_path = '<path-to-gram2>/gram3.txt'
-print("Loading gram3:", gram3_path)
+# print("Loading gram3:", gram3_path)
 gram3_dict = {}
 #with open(gram3_path, 'r',
 #          encoding='utf-8') as infile:

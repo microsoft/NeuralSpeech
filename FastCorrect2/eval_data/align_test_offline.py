@@ -342,6 +342,11 @@ def cal_charwer_zh(hypo_string, ref_string):
                 ops_matrix[i][j] = operation_idx
     return cost_matrix[len_hyp][len_ref]
 
+# The format of gramx.txt is <space-split ngram token> \t frequency
+# such as: 
+# good morning\t1000\n
+# the gramx.txt can be calculated based on unpaired text data.
+
 gram2_dict = {}
 # with open('gram2.txt', 'r',
 #           encoding='utf-8') as infile:

@@ -6,8 +6,8 @@ Currently this repo covers several research work:
 * Automatic Speech Recognition
   + [FastCorrect, NeurIPS 2021](https://arxiv.org/pdf/2105.03842.pdf) 
   + [FastCorrect 2, EMNLP 2021 Findings](https://arxiv.org/pdf/2109.14420.pdf)
-  + [CMatch, INTERSPEECH 2021](https://arxiv.org/pdf/2104.07491.pdf)
-  + [Adapter, TASLP 2022](https://arxiv.org/pdf/2105.11905.pdf)
+  + [CMatch for ASR, INTERSPEECH 2021](https://arxiv.org/pdf/2104.07491.pdf)
+  + [Adapter for ASR, TASLP 2022](https://arxiv.org/pdf/2105.11905.pdf)
 * Text to Speech
   + [LightSpeech, ICASSP 2021](https://arxiv.org/pdf/2102.04040.pdf)
   + [PriorGrad, ICLR 2022](https://arxiv.org/pdf/2106.06406.pdf)
