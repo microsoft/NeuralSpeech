@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from modules.operations import *
 from modules.tts_modules import DurationPredictor, LengthRegulator, PitchPredictor, EnergyPredictor,\
     TransformerEncoderLayer, DEFAULT_MAX_SOURCE_POSITIONS

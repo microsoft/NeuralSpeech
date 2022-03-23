@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 # The diffusion acoustic decoder module is based on the DiffWave architecture: https://github.com/lmnt-com/diffwave
 # Copyright 2020 LMNT, Inc. All Rights Reserved.
 #
