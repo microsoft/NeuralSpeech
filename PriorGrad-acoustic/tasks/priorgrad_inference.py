@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import os, glob, re
 from tts_utils.hparams import hparams, set_hparams
 from tasks.priorgrad import PriorGradDataset
