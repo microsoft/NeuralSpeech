@@ -19,7 +19,7 @@ Note: You can also download our preprocessed binarized data from [here](https://
 mkdir -p data/raw/
 cd data/raw/
 wget https://data.keithito.com/data/speech/LJSpeech-1.1.tar.bz2
-tar -zxf LJSpeech-1.1.tar.bz2
+tar -xf LJSpeech-1.1.tar.bz2
 cd ../../
 python datasets/tts/lj/prepare.py
 ```
