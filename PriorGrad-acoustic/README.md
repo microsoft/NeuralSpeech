@@ -27,7 +27,7 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
    git submodule update
    ```
 
-2. Prepare the dataset (LJspeech)
+2. Prepare the dataset (LJSpeech)
    ```bash
    mkdir -p data/raw/
    cd data/raw/
@@ -136,7 +136,7 @@ If you are only interested in text-to-speech with `tasks/priorgrad_inference.py`
 
 Note that you need to build the dataset (step 4 in the Quick Start section above) to use the checkpoints for other functionalities.
 
-Pre-built statistics (inference-only): [Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/ljspeech_hfg.zip) and unzip the file to `data/ljspeech_hfg`
+Pre-built statistics (LJSpeech, inference-only): [Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/ljspeech_hfg.zip) and unzip the file to `data/ljspeech_hfg`
 
 PriorGrad: [Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/priorgrad_am.zip) and unzip the file to `checkpoints/priorgrad`
 

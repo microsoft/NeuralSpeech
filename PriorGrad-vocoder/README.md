@@ -63,9 +63,11 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
 ## Pretrained weights
 We release the pretrained weights of PriorGrad-vocoder model trained on LJSpeech for 3M steps.
 
-`stats_priorgrad` saved at `data_root` is required to use the checkpoint for inference. Refer to the step 3 of the Quick Start and Examples above.
+`stats_priorgrad` saved at `data_root` is required to use the checkpoint for training and inference. Refer to the step 3 of the Quick Start and Examples above.
 
-[Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/priorgrad_voc.zip) and unzip the file to `checkpoints/priorgrad`
+Pre-built statistics (LJSpeech): [Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/stats_priorgrad.zip) and unzip the file to the root of the dataset (`/path/to/your/LJSpeech-1.1` in the above example). 
+
+PriorGrad: [Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/priorgrad_voc.zip) and unzip the file to `checkpoints/priorgrad`
 
 The codebase defines `weights.pt` as a symbolic link of the latest checkpoint.
 Restore the link with `ln -s weights-3000000.pt weights.pt` to continue training (`__main__.py`), or perform inference (`inference.py`) without specifying `--step`
