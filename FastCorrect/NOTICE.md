@@ -1,12 +1,12 @@
-#NOTICES
+# NOTICES
 
 This repository incorporates material as listed below or described in the code.
 
-#Component.
+# Component.
 
 Fairseq
 
-#Open Source License/Copyright Notice.
+# Open Source License/Copyright Notice.
 
 MIT License
 
@@ -30,11 +30,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-#Component.
+# Component.
 
 ESPnet
 
-#Open Source License/Copyright Notice.
+# Open Source License/Copyright Notice.
 
                                  Apache License
                            Version 2.0, January 2004
@@ -238,10 +238,10 @@ ESPnet
    See the License for the specific language governing permissions and
    limitations under the License.
 
-#Component.
+# Component.
 
 AISHELL-1
 
-#Open Source License/Copyright Notice.
+# Open Source License/Copyright Notice.
 
 Apache License v.2.0
