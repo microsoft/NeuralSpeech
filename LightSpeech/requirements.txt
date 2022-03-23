@@ -16,7 +16,7 @@ praat-parselmouth
 tensorboardX
 pillow
 pyloudnorm
-pytorch_lightning==1.6.0
+pytorch_lightning==0.6.0
 setuptools>=41.0.0
 miditoolkit==0.1.7
 sklearn
