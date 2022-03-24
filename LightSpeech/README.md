@@ -64,19 +64,18 @@ export PYTHONPATH=.
 python tasks/lightspeech.py
     --config configs/tts/lj/lightspeech.yaml
     --exp_name lightspeech
+    --reset
     --infer
 ```
 The generated output will be under `checkpoints/lightspeech/generated_[step]` folder.
 
-You can refer to [https://speechresearch.github.io/lightspeech/](https://speechresearch.github.io/lightspeech/) for generated audio samples.
-
 ### Measure inference time and RTF
-To measure the inference time of the model, add `--hparams "profile_infer=True"` to the inference command. This will measure the inference time of the model (exclude the vocoder) along with the time of generated audio waves. You will see the model inference time `model_time` and the generated audio waves time `gen_wav_time` in the log output. After the inference is done, you can get the total model inference time and the total generated audio waves time. For example, following log
+To measure the inference time of the model, add `--hparams "profile_infer=True"` to the inference command. This will measure the inference time of the model (exclude the vocoder) along with the time of generated audio waves. You will see the model inference time `model_time` and the generated audio waves time `gen_wav_time` in the log output. After the inference is done, you can get the total model inference time and the total generated audio waves time. For example, following output log
 ```
 model_time: 3.948242664337158
 gen_wav_time: 626.7530158730159
 ```
-means the total inference time of the model is 3.95 seconds, and the time of all the generateed audio waves is 626.75 seconds. To calculate the RTF, just divide the model inference time by the length of genearated audio waves: `RTF = model_time/gen_wav_time`. In this example, the `RTF=3.95/626.75=0.0063`.
+means the total inference time of the model is 3.95 seconds, and the time of all the generateed audio waves is 626.75 seconds. To calculate the RTF, just divide the model inference time by the genearated audio waves time: `RTF = model_time/gen_wav_time`. In this example, the `RTF=3.95/626.75=0.0063`.
 
 In our paper, we measure the inference time on CPU in single thread. To run in CPU mode, just set `CUDA_VISIBLE_DEVICES=`, and to use single thread, set `OMP_NUM_THREADS=1`. Then the command is:
 ```bash
@@ -96,6 +95,24 @@ model_time: 3.948242664337158
 gen_wav_time: 626.7530158730159
 ```
 So the RTF is `3.95/626.75=0.0063`.
+
+### 7. Trained Checkpoint
+We release our trained model checkpoint [here](https://msramllasc.blob.core.windows.net/modelrelease/LightSpeech/model_ckpt_steps_100000.ckpt). You can donwnload it and place it under `checkpoints/lightspeech`. Then you can do the inference following [step 6](#6-inference).
+```bash
+mkdir -p checkpoints/lightspeech
+cd checkpoints/lightspeech
+wget https://msramllasc.blob.core.windows.net/modelrelease/LightSpeech/model_ckpt_steps_100000.ckpt
+cd ../../
+export CUDA_VISIBLE_DEVICES=0
+export PYTHONPATH=.
+python tasks/lightspeech.py
+    --config configs/tts/lj/lightspeech.yaml
+    --exp_name lightspeech
+    --reset
+    --infer
+```
+
+You can refer to [https://speechresearch.github.io/lightspeech/](https://speechresearch.github.io/lightspeech/) for generated audio samples.
 
 ## Reference
 
