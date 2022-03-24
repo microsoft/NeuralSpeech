@@ -24,7 +24,7 @@ import torch.multiprocessing as mp
 from torch.nn import DataParallel
 from torch.nn.parallel import DistributedDataParallel
 from pytorch_lightning.callbacks import GradientAccumulationScheduler
-from pytorch_lightning.callbacks.pt_callbacks import ModelCheckpoint
+from pytorch_lightning.callbacks import ModelCheckpoint
 from torch.nn.parallel._functions import Gather
 from torch.optim.optimizer import Optimizer
 

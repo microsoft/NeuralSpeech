@@ -7,8 +7,8 @@ base_config: configs/config_base.yaml
 data_dir: ''
 raw_data_dir: ''
 dict_file: dict
-loud_norm: false
-endless_ds: true
+loud_norm: False
+endless_ds: True
 
 test_num: 100
 max_frames: 1550
@@ -27,7 +27,7 @@ magnitude_power: 1
 griffin_lim_iters: 60
 num_spk: 1
 vocoder: pwg
-gen_wav_denoise: false
+gen_wav_denoise: False
 
 #########
 # model
@@ -44,17 +44,17 @@ optimizer_adam_beta1: 0.9
 optimizer_adam_beta2: 0.98
 weight_decay: 0
 clip_grad_norm: 1
-attn_constraint: true
+attn_constraint: True
 enc_ffn_kernel_size: 9
 dec_ffn_kernel_size: 9
 ffn_padding: 'SAME'
-use_new_ffn: true
+use_new_ffn: True
 
 # reference encoder and speaker embedding
-use_spk_embed: false
-use_spk_id: false
-use_ref_enc: false
-use_ref_tfm: false
+use_spk_embed: False
+use_spk_id: False
+use_ref_enc: False
+use_ref_tfm: False
 ref_norm_layer: bn_nonpad
 latent_size: 32
 ref_hidden_and_stride:
@@ -75,5 +75,5 @@ train_set_name: 'train'
 valid_set_name: 'valid'
 test_set_name: 'test'
 vocoder_ckpt: ''
-profile_infer: false
-out_wav_norm: false
+profile_infer: False
+out_wav_norm: False

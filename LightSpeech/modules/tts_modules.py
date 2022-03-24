@@ -432,7 +432,6 @@ class LightSpeechDecoder(nn.Module):
                 x, attn_w_i = layer(x, encoder_padding_mask=padding_mask, require_w=require_w)
                 attn_w.append(attn_w_i)
         else:
-            # modules/operations.py:122, modules.operations.EncSALayer
             for layer in self.layers:
                 x = layer(x, encoder_padding_mask=padding_mask)  # remember to assign back to x
 

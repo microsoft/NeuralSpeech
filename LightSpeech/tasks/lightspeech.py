@@ -696,7 +696,7 @@ class LightSpeechTask(BaseTask):
             mel2ph = None
             pitch = None
             uv = None
-        with utils.Timer('fs', print_time=hparams['profile_infer']):
+        with utils.Timer('model_time', print_time=hparams['profile_infer']):
             outputs = self.model(input, mel2ph, spk_embed, None, pitch, uv)
 
         # denoise
@@ -714,8 +714,8 @@ class LightSpeechTask(BaseTask):
         sample['outputs'] = outputs['mel_out']
         sample['pitch_pred'] = outputs.get('pitch')
         sample['pitch'] = restore_pitch(sample['pitch'], uv if hparams['use_uv'] else None, hparams)
-        if hparams['profile_infer']:
-            return {}
+        #if hparams['profile_infer']:
+        #    return {}
         return self.after_infer(sample)
 
     def after_infer(self, predictions):

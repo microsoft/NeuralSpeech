@@ -12,30 +12,27 @@ filter_size: 1024
 enc_layers: 4
 dec_layers: 4
 ffn_kernel_size: 9
-use_energy_embed: False
-predictor_layer_type: 'sepconv'
 activation: 'relu'
 dropout: 0.2
-activation_dropout: 0.2
 max_tokens: 28000
-val_check_interval: 1000
-max_updates: 100000
-predictor_sg: true
+
+# predictor
+predictor_hidden: 256
+predictor_sg: True
+predictor_layer_type: 'sepconv'
 
 # duration
-predictor_hidden: 256
 dur_predictor_kernel: 3
-use_gt_dur: false
-sep_dur_loss: true
+use_gt_dur: False
+sep_dur_loss: True
 dur_predictor_layer: 2
 
 # pitch and energy
-use_pitch_embed: true
-use_uv: true
+use_pitch_embed: True
+use_uv: True
 use_energy_embed: False
 pitch_loss: 'l1'
 pitch_predictor_layer: 5
-energy_predictor_layer: 5
 
 # loss
 lambda_dur: 1.0
@@ -50,5 +47,7 @@ warmup_updates: 2000
 max_tokens: 28000
 max_sentences: -1
 max_eval_sentences: 1
-max_updates: 200000
+max_updates: 100000
+val_check_interval: 1000
 gen_dir_name: ''
+profile_infer: False

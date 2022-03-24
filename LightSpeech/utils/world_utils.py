@@ -56,7 +56,7 @@ f0_mel_max = 1127 * np.log(1 + f0_max / 700)
 def f0_to_coarse(f0):
     f0_mel = 1127 * np.log(1 + f0 / 700)
     # f0_mel[f0_mel == 0] = 0
-    # 大于0的分为255个箱
+    # split those greater than 0 to 255 bins
     f0_mel[f0_mel > 0] = (f0_mel[f0_mel > 0] - f0_mel_min) * (f0_bin - 2) / (f0_mel_max - f0_mel_min) + 1
 
     f0_mel[f0_mel < 0] = 1
@@ -70,7 +70,7 @@ def f0_to_coarse(f0):
 def f0_to_coarse_torch(f0):
     f0_mel = 1127 * (1 + f0 / 700).log()
     # f0_mel[f0_mel == 0] = 0
-    # 大于0的分为255个箱
+    # split those greater than 0 to 255 bins
     f0_mel[f0_mel > 0] = (f0_mel[f0_mel > 0] - f0_mel_min) * (f0_bin - 2) / (f0_mel_max - f0_mel_min) + 1
     f0_mel[f0_mel < 1] = 1
     f0_mel[f0_mel > f0_bin - 1] = f0_bin - 1
