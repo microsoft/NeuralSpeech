@@ -27,6 +27,8 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
    git submodule update
    ```
 
+Note: We release the pre-built LJSpeech binary dataset that can skip the preprocessing (step 2, 3 and 4). Refer to the [Pretrained Weights](#pretrained-weights) section below.
+
 2. Prepare the dataset (LJSpeech)
    ```bash
    mkdir -p data/raw/
@@ -96,7 +98,7 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
 7. Inference (fast mode with T=12)
    ```bash
    # the following command performs test set inference along with a grid search of the reverse noise schedule. 
-    CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/priorgrad.py \
+   CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python tasks/priorgrad.py \
    --config configs/tts/lj/priorgrad.yaml \
    --exp_name priorgrad \
    --reset \
@@ -110,7 +112,7 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
    
    `--infer` without `--fast` performs slow sampling with the same `T` as the forward diffusion used in training.
 
-## Text-to-speech with user-given text
+## Text-to-speech with User-given Text
 
 `tasks/priorgrad_inference.py` provides the text-to-speech inference of PriorGrad-acoustic with user-given text file defined in `--inference_text`. Refer to `inference_text.txt` for example.
    ```bash
@@ -123,20 +125,23 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
    --fast --fast_iter 12
    ```
 
-Samples are saved to `inference` folder created at `--exp_name`.
+Samples are saved to folders with `inference_(fast_iter)_(train_step)`  created at `--exp_name`.
 
-When using `--fast`, the grid-searched reverse noise schedule file is required. Refer to the inference section of the examples above.  
+When using `--fast`, the grid-searched reverse noise schedule file is required. Refer to the inference section (step 7) of the examples above.  
 
 
 
-## Pretrained weights
+## Pretrained Weights
 We release the pretrained weights of PriorGrad-acoustic models trained for 1M steps.
 
 If you are only interested in text-to-speech with `tasks/priorgrad_inference.py` from the provided checkpoints, you can download the pre-built statistics for inference. Using the pre-built statistics can skip building the dataset entirely.
 
-Note that you need to build the dataset (step 4 in the Quick Start section above) to use the checkpoints for other functionalities.
+Note that you need to build the dataset (step 2, 3, and 4 in the [Quick Start and Examples](#quick-start-and-examples) section above) to use the checkpoints for other functionalities. We also provide the pre-built LJSpeech dataset that can skip these steps.
+
+Pre-built dataset (LJSpeech): [Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/ljspeech_hfg_full.zip) and unzip the file to `data/ljspeech_hfg` 
 
 Pre-built statistics (LJSpeech, inference-only): [Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/ljspeech_hfg.zip) and unzip the file to `data/ljspeech_hfg`
+. This is a minimal subset of the pre-built dataset required for the text-to-speech inference. 
 
 PriorGrad: [Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/priorgrad_am.zip) and unzip the file to `checkpoints/priorgrad`
 

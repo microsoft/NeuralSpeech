@@ -62,10 +62,10 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
 
    Samples are saved to the `sample_fast` if `--fast` is used, or `sample_slow` if not, created at the parent directory of the model (`checkpoints` in the above example). 
 
-## Pretrained weights
+## Pretrained Weights
 We release the pretrained weights of PriorGrad-vocoder model trained on LJSpeech for 3M steps.
 
-`stats_priorgrad` saved at `data_root` is required to use the checkpoint for training and inference. Refer to the step 3 of the Quick Start and Examples above.
+`stats_priorgrad` saved at `data_root` is required to use the checkpoint for training and inference. Refer to the step 3 of the [Quick Start and Examples](#quick-start-and-examples) above.
 
 Pre-built statistics (LJSpeech): [Download from Azure blob storage](https://msramllasc.blob.core.windows.net/modelrelease/stats_priorgrad.zip) and unzip the file to the root of the dataset (`/path/to/your/LJSpeech-1.1` in the above example). 
 
