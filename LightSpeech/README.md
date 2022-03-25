@@ -15,7 +15,12 @@ Note: pytorch_lightning 0.6.0 may have a security issue(see [here](https://githu
 
 ### 1. Prepare dataset
 
-Note: You can also download our preprocessed binarized data from [here](https://msramllasc.blob.core.windows.net/modelrelease/LightSpeech/data.tgz), then you can skip step 1-3, and directly navigate to [step 4](#4-train-lightspeech).
+Note: You can download our preprocessed binarized data from [here](https://msramllasc.blob.core.windows.net/modelrelease/LightSpeech/data.tgz), and unpack it:
+```bash
+wget https://msramllasc.blob.core.windows.net/modelrelease/LightSpeech/data.tgz
+tar -zxvf data.tgz
+```
+then you can skip step 1-3, and directly navigate to [step 4](#4-train-lightspeech).
 
 ```bash
 mkdir -p data/raw/
@@ -91,10 +96,10 @@ python tasks/lightspeech.py
 ```
 Then you will get the model inference time on CPU in single thread, and you can calculate the RTF. We report our result here:
 ```
-model_time: 3.948242664337158
+model_time: 5.864823732376099
 gen_wav_time: 626.7530158730159
 ```
-So the RTF is `3.95/626.75=0.0063`.
+So the RTF is `5.86/626.75=0.0093`.
 
 ### 7. Trained Checkpoint
 We release our trained model checkpoint [here](https://msramllasc.blob.core.windows.net/modelrelease/LightSpeech/model_ckpt_steps_100000.ckpt). You can donwnload it and place it under `checkpoints/lightspeech`. Then you can do the inference following [step 6](#6-inference).
