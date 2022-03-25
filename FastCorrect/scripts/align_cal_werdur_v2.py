@@ -871,7 +871,7 @@ def cal_token_char_num(sentence):
     char_num = len("".join(sentence))
     return token_num * 1000 + char_num
 
-@set_timeout(30, after_timeout)  # 限时 20 秒超时
+@set_timeout(30, after_timeout)  # 30s limitation for align
 def align_encoder(hypo_sen, ref_sen):
 
     werdur, _ = calculate_wer_dur_v1(hypo_sen, ref_sen, return_path_only=False)

@@ -61,8 +61,8 @@ with open('all_char_pinyin.txt', 'r', encoding='utf-8') as infile:
 
 hypo_file = sys.argv[1]
 ref_file = sys.argv[2]
-hypo_file_out = sys.argv[3]
-ref_file_out = sys.argv[4]
+hypo_file_out = hypo_file
+ref_file_out = ref_file
 #tsv_file = sys.argv[1]
 all_hypo_line = []
 all_ref_line = []
