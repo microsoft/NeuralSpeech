@@ -148,7 +148,6 @@ class PriorGradLearner:
                         self._write_summary(self.step, features, loss)
                     if self.step % 10000 == 0:
                         self.run_valid_loop()
-                    # if self.step % len(self.dataset) == 0:
                     if self.step % 50000 == 0:
                         print("INFO: saving checkpoint at step {}".format(self.step))
                         self.save_to_checkpoint()
@@ -205,16 +204,17 @@ class PriorGradLearner:
         return loss, predicted
 
     def run_valid_loop(self):
-        device = next(self.model.parameters()).device
+        with torch.no_grad():
+            device = next(self.model.parameters()).device
 
-        losses = []
-        losses_l1 = []
-        audio_preds = []
+            losses = []
+            losses_l1 = []
+            audio_preds = []
 
-        for features in tqdm(self.dataset_val,
-                             desc=f'Valid {len(self.dataset_val)}') if self.is_master else self.dataset_val:
-            features = _nested_map(features, lambda x: x.to(device) if isinstance(x, torch.Tensor) else x)
-            with torch.no_grad():
+            for features in tqdm(self.dataset_val,
+                                 desc=f'Valid {len(self.dataset_val)}') if self.is_master else self.dataset_val:
+                features = _nested_map(features, lambda x: x.to(device) if isinstance(x, torch.Tensor) else x)
+
                 audio = features['audio']
                 spectrogram = features['spectrogram']
                 target_std = features['target_std']
@@ -240,34 +240,37 @@ class PriorGradLearner:
                 noise = noise * target_std
                 noisy_audio = noise_scale_sqrt * audio + (1.0 - noise_scale) ** 0.5 * noise
 
-                predicted = self.model(noisy_audio, spectrogram, t, global_cond)
-
-            if self.use_prior:
-                if self.use_l2loss:
-                    loss = scaled_mse_loss(predicted.squeeze(1), noise, target_std)
+                if hasattr(self.model, 'module'):
+                    predicted = self.model.module(noisy_audio, spectrogram, t, global_cond)
                 else:
-                    raise NotImplementedError
-            else:
-                if self.use_l2loss:
-                    loss = nn.MSELoss()(noise, predicted.squeeze(1))
+                    predicted = self.model(noisy_audio, spectrogram, t, global_cond)
+
+                if self.use_prior:
+                    if self.use_l2loss:
+                        loss = scaled_mse_loss(predicted.squeeze(1), noise, target_std)
+                    else:
+                        raise NotImplementedError
                 else:
-                    loss = nn.L1Loss()(noise, predicted.squeeze(1))
+                    if self.use_l2loss:
+                        loss = nn.MSELoss()(noise, predicted.squeeze(1))
+                    else:
+                        loss = nn.L1Loss()(noise, predicted.squeeze(1))
 
-            losses.append(loss.cpu().numpy())
+                losses.append(loss.cpu().numpy())
 
-            audio_pred = self.predict(spectrogram, target_std, global_cond)
-            audio_preds.append(audio_pred.cpu().numpy())
+                audio_pred = self.predict(spectrogram, target_std, global_cond)
+                audio_preds.append(audio_pred.cpu().numpy())
 
-            loss_l1 = torch.nn.L1Loss()(get_mel(audio_pred.squeeze(0), self.params), spectrogram).item()
-            losses_l1.append(loss_l1)
+                loss_l1 = torch.nn.L1Loss()(get_mel(audio_pred.squeeze(0), self.params), spectrogram).item()
+                losses_l1.append(loss_l1)
 
-        loss_valid = np.mean(losses)
-        loss_l1 = np.mean(losses_l1)
-        self._write_summary_valid(self.step, loss_valid, loss_l1, audio_preds)
+            loss_valid = np.mean(losses)
+            loss_l1 = np.mean(losses_l1)
+            self._write_summary_valid(self.step, loss_valid, loss_l1, audio_preds)
 
     def predict(self, spectrogram, target_std, global_cond=None):
-        device = next(self.model.parameters()).device
         with torch.no_grad():
+            device = next(self.model.parameters()).device
             # Change in notation from the PriorGrad paper for fast sampling.
             # PriorGrad paper -> Implementation below
             # --------------------------------------
@@ -307,8 +310,12 @@ class PriorGradLearner:
             for n in range(len(alpha) - 1, -1, -1):
                 c1 = 1 / alpha[n] ** 0.5
                 c2 = beta[n] / (1 - alpha_cum[n]) ** 0.5
-                audio = c1 * (audio - c2 * self.model(audio, spectrogram, torch.tensor([T[n]], device=audio.device),
-                                                      global_cond).squeeze(1))
+                if hasattr(self.model, 'module'):
+                    audio = c1 * (audio - c2 * self.model.module(audio, spectrogram, torch.tensor([T[n]], device=audio.device),
+                                                                 global_cond).squeeze(1))
+                else:
+                    audio = c1 * (audio - c2 * self.model(audio, spectrogram, torch.tensor([T[n]], device=audio.device),
+                                                          global_cond).squeeze(1))
                 if n > 0:
                     noise = torch.randn_like(audio) * target_std
                     sigma = ((1.0 - alpha_cum[n - 1]) / (1.0 - alpha_cum[n]) * beta[n]) ** 0.5
