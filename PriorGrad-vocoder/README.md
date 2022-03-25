@@ -60,6 +60,8 @@ Refer to the [demo page](https://speechresearch.github.io/priorgrad/) for the sa
    
    If `--fast` is not provided, the model performs slow sampling with the same `T` step forward diffusion used in training.
 
+   Samples are saved to the `sample_fast` if `--fast` is used, or `sample_slow` if not, created at the parent directory of the model (`checkpoints` in the above example). 
+
 ## Pretrained weights
 We release the pretrained weights of PriorGrad-vocoder model trained on LJSpeech for 3M steps.
 
