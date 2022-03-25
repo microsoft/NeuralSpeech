@@ -439,25 +439,17 @@ class ConvSeparable(nn.Module):
         self.out_channels = out_channels
         self.kernel_size = kernel_size
         self.padding = padding
-        self.W_depthwise = torch.nn.Parameter(torch.Tensor(in_channels, 1, self.kernel_size))
-        self.W_pointwise = torch.nn.Parameter(torch.Tensor(out_channels, in_channels, 1))
-        self.bias = torch.nn.Parameter(torch.Tensor(out_channels))
-        #self.depthwise_conv = nn.Conv1d(in_channels, in_channels, self.kernel_size, padding=padding, groups=in_channels, bias=False)
-        #self.pointwise_conv = nn.Conv1d(in_channels, out_channels, 1)
+        self.depthwise_conv = nn.Conv1d(in_channels, in_channels, self.kernel_size, padding=padding, groups=in_channels, bias=False)
+        self.pointwise_conv = nn.Conv1d(in_channels, out_channels, 1)
         std = math.sqrt((4 * (1.0 - dropout)) / (kernel_size * out_channels))
-        #nn.init.normal_(self.depthwise_conv.weight, mean=0, std=std)
-        #nn.init.normal_(self.pointwise_conv.weight, mean=0, std=std)
-        #nn.init.constant_(self.pointwise_conv.bias, 0)
-        nn.init.normal_(self.W_depthwise, mean=0, std=std)
-        nn.init.normal_(self.W_pointwise, mean=0, std=std)
-        nn.init.constant_(self.bias, 0)
+        nn.init.normal_(self.depthwise_conv.weight, mean=0, std=std)
+        nn.init.normal_(self.pointwise_conv.weight, mean=0, std=std)
+        nn.init.constant_(self.pointwise_conv.bias, 0)
 
-    def forward(self, input):
-        # input : B * T * C
-        x = F.conv1d(input.contiguous(), self.W_depthwise, padding=self.padding, groups=self.in_channels)
-        x = F.conv1d(x, self.W_pointwise, padding=0, bias=self.bias)
-        #x = self.depthwise_conv(input)
-        #x = self.pointwise_conv(x)
+    def forward(self, x):
+        # x : B * C * T
+        x = self.depthwise_conv(x)
+        x = self.pointwise_conv(x)
         return x
 
 

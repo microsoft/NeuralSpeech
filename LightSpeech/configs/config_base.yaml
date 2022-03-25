@@ -1,23 +1,23 @@
 # task
 data_dir: ''
 work_dir: '' # experiment directory.
-infer: false # infer
+infer: False # infer
 seed: 1234
-debug: false
+debug: False
 resume_from_checkpoint: ''
 
 #############
 # dataset
 #############
 test_num: 100
-indexed_ds: true
-endless_ds: false
-sort_by_len: true
+indexed_ds: True
+endless_ds: False
+sort_by_len: True
 
 #########
 # train and eval
 #########
-save_ckpt: true
+save_ckpt: True
 clip_grad_norm: 0
 accumulate_grad_batches: 1
 log_interval: 100
@@ -30,8 +30,8 @@ max_tokens: 31250
 max_sentences: -1
 max_eval_tokens: -1
 max_eval_sentences: -1
-use_training: false
-use_amp: false
+use_training: False
+use_amp: False
 
 ########
 # other setting

@@ -21,7 +21,7 @@ def set_hparams(use_cmd=True, config='', exp_name='', hparams_str=''):
                             help='location of the data corpus')
         parser.add_argument('--exp_name', type=str, default='', help='exp_name')
         parser.add_argument('--hparams', type=str, default='',
-                            help='location of the data corpus')
+                            help='other params')
         parser.add_argument('--infer', action='store_true', help='infer')
         parser.add_argument('--validate', action='store_true', help='validate')
         parser.add_argument('--reset', action='store_true', help='reset hparams')

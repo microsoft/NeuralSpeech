@@ -531,10 +531,10 @@ class LightSpeechTask(BaseTask):
                     ckpts = glob.glob(f'{base_dir}/checkpoint-*steps.pkl')
                     ckpt = sorted(ckpts, key=
                     lambda x: int(re.findall(f'{base_dir}/checkpoint-(\d+)steps.pkl', x)[0]))[-1]
-                    config_path = f'{base_dir}/config.yaml'
+                    config_path = f'{base_dir}/config.yml'
                 else:
                     base_dir = hparams['vocoder_ckpt']
-                    config_path = f'{base_dir}/config.yaml'
+                    config_path = f'{base_dir}/config.yml'
                     ckpt = sorted(glob.glob(f'{base_dir}/model_ckpt_steps_*.ckpt'), key=
                     lambda x: int(re.findall(f'{base_dir}/model_ckpt_steps_(\d+).ckpt', x)[0]))[-1]
                 print('| load wavegan: ', ckpt)
@@ -696,7 +696,7 @@ class LightSpeechTask(BaseTask):
             mel2ph = None
             pitch = None
             uv = None
-        with utils.Timer('fs', print_time=hparams['profile_infer']):
+        with utils.Timer('model_time', print_time=hparams['profile_infer']):
             outputs = self.model(input, mel2ph, spk_embed, None, pitch, uv)
 
         # denoise
@@ -714,8 +714,8 @@ class LightSpeechTask(BaseTask):
         sample['outputs'] = outputs['mel_out']
         sample['pitch_pred'] = outputs.get('pitch')
         sample['pitch'] = restore_pitch(sample['pitch'], uv if hparams['use_uv'] else None, hparams)
-        if hparams['profile_infer']:
-            return {}
+        #if hparams['profile_infer']:
+        #    return {}
         return self.after_infer(sample)
 
     def after_infer(self, predictions):
