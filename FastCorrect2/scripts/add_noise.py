@@ -323,7 +323,7 @@ with open(infile, 'r', encoding='utf-8') as infile:
 
             need_skip = False
             for iter_line in new_lines:
-                if not iter_line:
+                if not iter_line.strip():
                     need_skip = True
                     break
             if need_skip:

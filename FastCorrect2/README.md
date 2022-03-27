@@ -35,7 +35,7 @@ to add noise several (e.g. 5) times with different random seeds, resulting large
 ### Step 2, Data generation
 
 For all text data, we perform tokenization and bpe with SentencePiece package. Given (pseudo or real) paired data for ASR correction, we first align source sentence with target sentence, obtaining the number of target token corresponding with
-each source token. The script of aligning sentences can be found in `scripts/align_cal_werdur_v2.py`.
+each source token. The script of aligning sentences can be found in `scripts/align_cal_werdur_v2.py`. A faster version of alignment can be found in `scripts/align_cal_werdur_fast.py`. The performance drop of fast alignment is very slightly.
 
 Then we binarize the alignment results with `runs/data-gen.sh`.
 
