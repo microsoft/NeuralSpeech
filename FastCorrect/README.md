@@ -46,7 +46,7 @@ Note: For AISHELL-1 dataset, which is small and easy to fit, we decode training 
 ### Step 3, Pre-training and Fine-tuning:
 We can pretrain the FastCorrect model on pseudo paired data with `runs/train_pretrain.sh`.
 
-We release our pretrain model in [here](https://msramllasc.blob.core.windows.net/modelrelease/fastcorrect_pretrain.pt). Since our model is a Chinese character-based model, arbitrary SentencePiece model can be used during the inference phase. We provide a SentencePiece model in [here](https://msramllasc.blob.core.windows.net/modelrelease/FastCorrect_random_sentencepiece.model), which is trained on Chinese wiki data.
+We release our pretrain model in [here](https://msramllasc.blob.core.windows.net/modelrelease/fastcorrect_pretrain.pt). Since our model is a Chinese character-based model, arbitrary SentencePiece model can be used during the inference phase. We provide a SentencePiece model in [here](https://msramllasc.blob.core.windows.net/modelrelease/FastCorrect_zhwiki_sentencepiece.model), which is trained on Chinese wiki data.
 
 Then we fine-tune the FastCorrect model on real paired data with `runs/train_ft.sh`.
 
