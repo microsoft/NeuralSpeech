@@ -43,7 +43,7 @@ except:
     checkpoint_file = "checkpoint_best.pt"
 
 print("test {}/{}".format(model_name_or_path, checkpoint_file))
-data_name_or_path = # <Path-to-AISHELL1-Binary-Data>
+data_name_or_path = # <Path-to-AISHELL1-Training-Binary-Data>
 bpe = "sentencepiece"
 sentencepiece_model = # <path-to-sentencepiece_model>, you can use arbitrary sentencepiece for our pretrained model since it is a char-level model
 
