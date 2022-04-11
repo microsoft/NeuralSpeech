@@ -1,0 +1,3 @@
+Lightspeech is a light weight and fast TTS model designed via neural architecture search.
+You can type in any text here to perform text to speech.
+If you find Lightspeech useful to your work, please consider citing the paper.
