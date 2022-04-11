@@ -28,12 +28,9 @@ task.global_step = ckpt['global_step']
 task.load_state_dict(ckpt['state_dict'])
 
 # load the model to gpu
-if torch.cuda.is_available():
-    task.model.eval().cuda()
-else:
-    task.model.eval()
+task.model.eval().cuda()
 
-# prepare hifi-gan vocoder
+# prepare vocoder
 task.prepare_vocoder()
 
 # define LightSpeechDataset. will only use the functions (text_to_phone and phone_to_prior) and not the actual test dataset
@@ -55,7 +52,7 @@ with torch.no_grad():
     for i, text in enumerate(tqdm(user_text)):
         text = text.strip()
         phone = torch.LongTensor(dataset.text_to_phone(text))
-        phone = phone.unsqueeze(0).cuda() if torch.cuda.is_available() else phone.unsqueeze(0)
+        phone = phone.unsqueeze(0).cuda()
         output = task.model(phone, None, None, None, None, None)
         output['outputs'] = output['mel_out']
         _output = utils.unpack_dict_to_list(output)[0]
