@@ -47,9 +47,9 @@ PYTHONPATH=. python datasets/tts/lj/gen.py --config configs/tts/lj/lightspeech.y
 ```bash
 export CUDA_VISIBLE_DEVICES=0,1,2,3 # we run on 4 cards in our paper
 export PYTHONPATH=.
-python tasks/lightspeech.py
-    --config configs/tts/lj/lightspeech.yaml
-    --exp_name lightspeech
+python tasks/lightspeech.py \
+    --config configs/tts/lj/lightspeech.yaml \
+    --exp_name lightspeech \
     --reset
 ```
 `--reset` is to reset the hyper parameters stored in the config file under the checkpoint folder if exists with the config file proved through `--config`.
@@ -66,10 +66,10 @@ To generate audio, run below command:
  ```bash
 export CUDA_VISIBLE_DEVICES=0
 export PYTHONPATH=.
-python tasks/lightspeech.py
-    --config configs/tts/lj/lightspeech.yaml
-    --exp_name lightspeech
-    --reset
+python tasks/lightspeech.py \
+    --config configs/tts/lj/lightspeech.yaml \
+    --exp_name lightspeech \
+    --reset \
     --infer
 ```
 The generated output will be under `checkpoints/lightspeech/generated_[step]` folder.
@@ -87,11 +87,11 @@ In our paper, we measure the inference time on CPU in single thread. To run in C
 export OMP_NUM_THREADS=1
 export CUDA_VISIBLE_DEVICES=
 export PYTHONPATH=.
-python tasks/lightspeech.py
-    --config=configs/tts/lj/lightspeech.yaml
-    --exp_name=lightspeech
-    --infer
-    --reset
+python tasks/lightspeech.py \
+    --config=configs/tts/lj/lightspeech.yaml \
+    --exp_name=lightspeech \
+    --infer \
+    --reset \
     --hparams="profile_infer=True"
 ```
 Then you will get the model inference time on CPU in single thread, and you can calculate the RTF. We report our result here:
@@ -110,14 +110,29 @@ wget https://msramllasc.blob.core.windows.net/modelrelease/LightSpeech/model_ckp
 cd ../../
 export CUDA_VISIBLE_DEVICES=0
 export PYTHONPATH=.
-python tasks/lightspeech.py
-    --config configs/tts/lj/lightspeech.yaml
-    --exp_name lightspeech
-    --reset
+python tasks/lightspeech.py \
+    --config configs/tts/lj/lightspeech.yaml \
+    --exp_name lightspeech \
+    --reset \
     --infer
 ```
 
 You can refer to [https://speechresearch.github.io/lightspeech/](https://speechresearch.github.io/lightspeech/) for generated audio samples.
+
+### 8. Inference with User Input
+`tasks/lightspeech_inference.py` provides the text-to-speech inference of LightSpeech with user input text file defined by `--inference_text`. Refer to `inference_text.txt` for an example.
+```bash
+# the following command performs text-to-speech inference from inference_text.txt
+export CUDA_VISIBLE_DEVICES=0
+export PYTHONPATH=.
+python tasks/lightspeech.py \
+    --config configs/tts/lj/lightspeech.yaml \
+    --exp_name lightspeech \
+    --reset \
+    --inference_text inference_text.txt
+```
+
+Samples are saved to folders with `inference_[inference_text]_[step]` created at `--exp_name`.
 
 ## Reference
 
