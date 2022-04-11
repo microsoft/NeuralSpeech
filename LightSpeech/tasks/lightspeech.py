@@ -33,6 +33,7 @@ from utils.pwg_decode_from_mel import generate_wavegan, load_pwg_model
 from utils.plot import plot_to_figure
 from utils.world_utils import restore_pitch, process_f0 
 from utils.tts_utils import GeneralDenoiser
+from g2p_en import G2p
 
 log_format = '%(asctime)s %(message)s'
 logging.basicConfig(stream=sys.stdout, level=logging.INFO,
@@ -41,20 +42,24 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO,
 class LightSpeechDataset(BaseDataset):
     """A dataset that provides helpers for batching."""
 
-    def __init__(self, data_dir, phone_encoder, prefix, hparams, shuffle=False):
+    def __init__(self, data_dir, phone_encoder, prefix, hparams, shuffle=False, infer_only=False):
         super().__init__(data_dir, prefix, hparams, shuffle)
         self.phone_encoder = phone_encoder
-        self.data = None
-        self.idx2key = np.load(f'{self.data_dir}/{self.prefix}_all_keys.npy')
-        self.sizes = np.load(f'{self.data_dir}/{self.prefix}_lengths.npy')
+        self.infer_only = infer_only
+        if not self.infer_only:
+            self.data = None
+            self.idx2key = np.load(f'{self.data_dir}/{self.prefix}_all_keys.npy')
+            self.sizes = np.load(f'{self.data_dir}/{self.prefix}_lengths.npy')
         self.num_spk = hparams['num_spk']
         self.use_indexed_ds = hparams['indexed_ds']
         self.indexed_bs = None
+        self.g2p = G2p()
 
-        # filter out items with no pitch
-        f0s = np.load(f'{self.data_dir}/{prefix}_f0s.npy', allow_pickle=True)
-        self.avail_idxs = [i for i, f0 in enumerate(f0s) if sum(f0) > 0]
-        self.sizes = [self.sizes[i] for i in self.avail_idxs]
+        if not self.infer_only:
+            # filter out items with no pitch
+            f0s = np.load(f'{self.data_dir}/{prefix}_f0s.npy', allow_pickle=True)
+            self.avail_idxs = [i for i, f0 in enumerate(f0s) if sum(f0) > 0]
+            self.sizes = [self.sizes[i] for i in self.avail_idxs]
 
         # pitch stats
         f0s = np.load(f'{self.data_dir}/train_f0s.npy', allow_pickle=True)
@@ -62,6 +67,17 @@ class LightSpeechDataset(BaseDataset):
         f0s = f0s[f0s != 0]
         hparams['f0_mean'] = self.f0_mean = np.mean(f0s).item()
         hparams['f0_std'] = self.f0_std = np.std(f0s).item()
+
+    def text_to_phone(self, txt):
+        # function that converts the user-given text to phoneme sequence used in LightSpeech
+        # the implementation mirrors datasets/tts/lj/prepare.py and datasets/tts/lj/gen_fs2_p.py
+        # input: text string
+        # output: encoded phoneme string
+        phs = [p.replace(" ", "|") for p in self.g2p(txt)]
+        ph = " ".join(phs)
+        ph = "<UNK> " + ph + " <EOS>"
+        phone_encoded = self.phone_encoder.encode(ph)
+        return phone_encoded
 
     def _get_item(self, index):
         if not self.use_indexed_ds:

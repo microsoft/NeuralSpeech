@@ -23,6 +23,8 @@ def set_hparams(use_cmd=True, config='', exp_name='', hparams_str=''):
         parser.add_argument('--hparams', type=str, default='',
                             help='other params')
         parser.add_argument('--infer', action='store_true', help='infer')
+        parser.add_argument('--inference_text', type=str, default=None,
+                            help="path of text file containing user-given text for TTS inference.")
         parser.add_argument('--validate', action='store_true', help='validate')
         parser.add_argument('--reset', action='store_true', help='reset hparams')
         parser.add_argument('--debug', action='store_true', help='debug')
@@ -81,3 +83,4 @@ def set_hparams(use_cmd=True, config='', exp_name='', hparams_str=''):
     hparams['infer'] = args.infer
     hparams['debug'] = args.debug
     hparams['validate'] = args.validate
+    hparams['inference_text'] = args.inference_text

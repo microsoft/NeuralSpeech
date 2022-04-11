@@ -1,0 +1,3 @@
+Light speech is a light weight and fast text to speech model designed via neural architecture search.
+You can type in any text here to perform text to speech.
+If you find Light speech useful to your work, please consider citing the paper.
