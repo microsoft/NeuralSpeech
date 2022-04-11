@@ -72,7 +72,7 @@ python tasks/lightspeech.py \
     --reset \
     --infer
 ```
-The generated output will be under `checkpoints/lightspeech/generated_[step]` folder.
+The generated output will be under `checkpoints/[exp_name]]/generated_[step]` folder.
 
 ### Measure inference time and RTF
 To measure the inference time of the model, add `--hparams "profile_infer=True"` to the inference command. This will measure the inference time of the model (exclude the vocoder) along with the time of generated audio waves. You will see the model inference time `model_time` and the generated audio waves time `gen_wav_time` in the log output. After the inference is done, you can get the total model inference time and the total generated audio waves time. For example, following output log
@@ -125,14 +125,14 @@ You can refer to [https://speechresearch.github.io/lightspeech/](https://speechr
 # the following command performs text-to-speech inference from inference_text.txt
 export CUDA_VISIBLE_DEVICES=0
 export PYTHONPATH=.
-python tasks/lightspeech.py \
+python tasks/lightspeech_inference.py \
     --config configs/tts/lj/lightspeech.yaml \
     --exp_name lightspeech \
     --reset \
     --inference_text inference_text.txt
 ```
 
-Samples are saved to folders with `inference_[inference_text]_[step]` created at `--exp_name`.
+Samples are saved to the folder `checkpoints/[exp_name]/inference_[inference_text]_[step]`.
 
 ## Reference
 
