@@ -13,9 +13,9 @@ Currently this repo covers several research work:
   + [PriorGrad, ICLR 2022](https://arxiv.org/pdf/2106.06406.pdf)
 
 
-For more research work in NeuralSpeech project, you can refer to this page: https://speechresearch.github.io/. We will release more research work in the future. 
+For more research in NeuralSpeech project, you can refer to this page: https://speechresearch.github.io/. We will release more research work in the future. 
 
-
+For our research on AI music, you can refer to our Muzic project: https://github.com/microsoft/muzic.
 
 ## Reference
 
