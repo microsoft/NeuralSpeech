@@ -17,6 +17,10 @@ For more research in NeuralSpeech project, you can refer to this page: https://s
 
 For our research on AI music, you can refer to our Muzic project: https://github.com/microsoft/muzic.
 
+
+### We are hiring! 
+We are hiring researchers on **speech (speech synthesis, speech recognition, voice conversion, audio processing), natural language processing, and machine learning**. Please contact Xu Tan (xuta@microsoft.com) if you have interests. 
+
 ## Reference
 
 If you find NeuralSpeech project useful in your work, you can cite the following papers:
