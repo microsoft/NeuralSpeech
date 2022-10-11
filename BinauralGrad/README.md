@@ -1,5 +1,5 @@
 # BinauralGrad
-[BinauralGrad: A Two-Stage Conditional Diffusion Probabilistic Model for Binaural Audio Synthesis](https://arxiv.org/abs/2205.14807), by Yichong Leng, Zehua Chen, Junliang Guo, Haohe Liu, Jiawei Chen, Xu Tan, Danilo Mandic, Lei He, Xiang-Yang Li, Tao Qin, Sheng Zhao and Tie-Yan Liu, is a novel two-stage framework equipped with diffusion models to accurately predict the binaural audio waveforms. Our implement is based on the opensource code of [Diffwave](https://github.com/lmnt-com/diffwave). The audio samples can be found in the [deme page](https://speechresearch.github.io/binauralgrad/).
+[BinauralGrad: A Two-Stage Conditional Diffusion Probabilistic Model for Binaural Audio Synthesis](https://arxiv.org/abs/2205.14807), by Yichong Leng, Zehua Chen, Junliang Guo, Haohe Liu, Jiawei Chen, Xu Tan, Danilo Mandic, Lei He, Xiang-Yang Li, Tao Qin, Sheng Zhao and Tie-Yan Liu, is a novel two-stage framework equipped with diffusion models to accurately predict the binaural audio waveforms. Our implement is based on the opensource code of [Diffwave](https://github.com/lmnt-com/diffwave). The audio samples can be found in the [demo page](https://speechresearch.github.io/binauralgrad/).
 
 ## Install
 
