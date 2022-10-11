@@ -1,6 +1,6 @@
 # NeuralSpeech
 
-**NeuralSpeech** is a research project in Microsoft Research Asia focusing on neural network based speech processing, including automatic speech recognition (ASR), text to speech (TTS), etc. 
+**NeuralSpeech** is a research project in Microsoft Research Asia focusing on neural network based speech processing, including automatic speech recognition (ASR), text to speech (TTS), spatial audio, etc. 
 
 Currently this repo covers several research work: 
 * Automatic Speech Recognition
@@ -11,6 +11,9 @@ Currently this repo covers several research work:
 * Text to Speech
   + [LightSpeech, ICASSP 2021](https://arxiv.org/pdf/2102.04040.pdf)
   + [PriorGrad, ICLR 2022](https://arxiv.org/pdf/2106.06406.pdf)
+* Spatial Audio
+  + [BinauralGrad, NeurIPS 2022](https://arxiv.org/abs/2205.14807)
+
 
 
 For more research in NeuralSpeech project, you can refer to this page: https://speechresearch.github.io/. We will release more research work in the future. 
@@ -31,6 +34,7 @@ If you find NeuralSpeech project useful in your work, you can cite the following
 * *PriorGrad: Improving Conditional Denoising Diffusion Models with Data-Dependent Adaptive Prior*, Sang-gil Lee, Heeseung Kim, Chaehun Shin, Xu Tan, Chang Liu, Qi Meng, Tao Qin, Wei Chen, Sungroh Yoon, Tie-Yan Liu, ICLR 2022.
 * [CMatch] *Cross-domain Speech Recognition with Unsupervised Character-level Distribution Matching*, Wenxin Hou, Jindong Wang, Xu Tan, Tao Qin, Takahiro Shinozaki. Interspeech 2021.
 * [Adapter] *Exploiting Adapters for Cross-lingual Low-resource Speech Recognition*, Wenxin Hou, Han Zhu, Yidong Wang, Jindong Wang, Tao Qin, Renjun Xu, Takahiro Shinozaki. IEEE/ACM Transactions on Audio, Speech, and Language Processing (TASLP) 2022.
+* *BinauralGrad: A Two-Stage Conditional Diffusion Probabilistic Model for Binaural Audio Synthesis*, Yichong Leng, Zehua Chen, Junliang Guo, Haohe Liu, Jiawei Chen, Xu Tan, Danilo Mandic, Lei He, Xiang-Yang Li, Tao Qin, Sheng Zhao and Tie-Yan Liu, NeurIPS 2022.
 
 
 ## Contributing

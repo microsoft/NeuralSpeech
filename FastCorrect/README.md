@@ -61,7 +61,7 @@ After installing sctk (`./install_sctk.sh`), we can calculate WER with `cal_wer_
 
 ## Reference
 
-If you FastCorrect useful in your work, you can cite the paper as below:
+If you find FastCorrect useful in your work, you can cite the paper as below:
 
     @inproceedings{leng2021fastcorrect,
         title={FastCorrect: Fast Error Correction with Edit Alignment for Automatic Speech Recognition},
