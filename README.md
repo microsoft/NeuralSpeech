@@ -4,16 +4,19 @@
 
 Currently this repo covers several research work: 
 * Automatic Speech Recognition
-  + [FastCorrect, NeurIPS 2021](https://arxiv.org/pdf/2105.03842.pdf) 
-  + [FastCorrect 2, EMNLP 2021 Findings](https://arxiv.org/pdf/2109.14420.pdf)
-  + [CMatch for ASR, INTERSPEECH 2021](https://arxiv.org/pdf/2104.07491.pdf)
-  + [Adapter for ASR, TASLP 2022](https://arxiv.org/pdf/2105.11905.pdf)
+  + [FastCorrect, NeurIPS 2021](https://arxiv.org/abs/2105.03842) 
+  + [FastCorrect 2, EMNLP 2021 Findings](https://arxiv.org/abs/2109.14420)
+  + [SoftCorrect, AAAI 2023]() 
+  + [MaskCorrect, EMNLP 2022](https://arxiv.org/abs/2211.13252)
+  + [CMatch for ASR, INTERSPEECH 2021](https://arxiv.org/abs/2104.07491)
+  + [Adapter for ASR, TASLP 2022](https://arxiv.org/abs/2105.11905)
 * Text to Speech
-  + [LightSpeech, ICASSP 2021](https://arxiv.org/pdf/2102.04040.pdf)
-  + [PriorGrad, ICLR 2022](https://arxiv.org/pdf/2106.06406.pdf)
+  + [LightSpeech, ICASSP 2021](https://arxiv.org/abs/2102.04040)
+  + [PriorGrad, ICLR 2022](https://arxiv.org/abs/2106.06406)
 * Spatial Audio
   + [BinauralGrad, NeurIPS 2022](https://arxiv.org/abs/2205.14807)
-
+* Video Dubbing
+  + [VideoDubber, AAAI 2023]()
 
 
 For more research in NeuralSpeech project, you can refer to this page: https://speechresearch.github.io/. We will release more research work in the future. 
@@ -28,13 +31,17 @@ We are hiring researchers on **speech (speech synthesis, speech recognition, voi
 
 If you find NeuralSpeech project useful in your work, you can cite the following papers:
 
-* *FastCorrect: Fast Error Correction with Edit Alignment for Automatic Speech Recognition*, Yichong Leng, Xu Tan, Linchen Zhu, Jin Xu, Renqian Luo, Linquan Liu, Tao Qin, Xiang-Yang Li, Ed Lin and Tie-Yan Liu, NeurIPS 2021.
-* *FastCorrect 2: Fast Error Correction on Multiple Candidates for Automatic Speech Recognition*, Yichong Leng, Xu Tan, Rui Wang, Linchen Zhu, Jin Xu, Wenjie Liu, Linquan Liu, Tao Qin, Xiang-Yang Li, Ed Lin, Tie-Yan Liu, Findings of EMNLP 2021.
-* *LightSpeech: Lightweight and Fast Text to Speech with Neural Architecture Search*, Renqian Luo, Xu Tan, Rui Wang, Tao Qin, Jinzhu Li, Sheng Zhao, Enhong Chen and Tie-Yan Liu, ICASSP 2021.
-* *PriorGrad: Improving Conditional Denoising Diffusion Models with Data-Dependent Adaptive Prior*, Sang-gil Lee, Heeseung Kim, Chaehun Shin, Xu Tan, Chang Liu, Qi Meng, Tao Qin, Wei Chen, Sungroh Yoon, Tie-Yan Liu, ICLR 2022.
-* [CMatch] *Cross-domain Speech Recognition with Unsupervised Character-level Distribution Matching*, Wenxin Hou, Jindong Wang, Xu Tan, Tao Qin, Takahiro Shinozaki. Interspeech 2021.
-* [Adapter] *Exploiting Adapters for Cross-lingual Low-resource Speech Recognition*, Wenxin Hou, Han Zhu, Yidong Wang, Jindong Wang, Tao Qin, Renjun Xu, Takahiro Shinozaki. IEEE/ACM Transactions on Audio, Speech, and Language Processing (TASLP) 2022.
-* *BinauralGrad: A Two-Stage Conditional Diffusion Probabilistic Model for Binaural Audio Synthesis*, Yichong Leng, Zehua Chen, Junliang Guo, Haohe Liu, Jiawei Chen, Xu Tan, Danilo Mandic, Lei He, Xiang-Yang Li, Tao Qin, Sheng Zhao and Tie-Yan Liu, NeurIPS 2022.
+* [1] ***FastCorrect**: Fast Error Correction with Edit Alignment for Automatic Speech Recognition*, Yichong Leng, Xu Tan, Linchen Zhu, Jin Xu, Renqian Luo, Linquan Liu, Tao Qin, Xiang-Yang Li, Ed Lin and Tie-Yan Liu, **NeurIPS 2021**.
+* [2] ***FastCorrect 2**: Fast Error Correction on Multiple Candidates for Automatic Speech Recognition*, Yichong Leng, Xu Tan, Rui Wang, Linchen Zhu, Jin Xu, Wenjie Liu, Linquan Liu, Tao Qin, Xiang-Yang Li, Ed Lin, Tie-Yan Liu, **Findings of EMNLP 2021**.
+* [3] ***SoftCorrect**: Error Correction with Soft Detection for Automatic Speech Recognition*, Yichong Leng, Xu Tan, Wenjie Liu, Kaitao Song, Rui Wang, Xiang-Yang Li, Tao Qin, Edward Lin, Tie-Yan Liu, **AAAI 2023**.
+* [4] ***Mask the Correct Tokens**: An Embarrassingly Simple Approach for Error Correction*, Kai Shen, Yichong Leng, Xu Tan, Siliang Tang, Yuan Zhang, Wenjie Liu, Edward Lin, **EMNLP 2022**.
+* [5] ***[CMatch]*** *Cross-domain Speech Recognition with Unsupervised Character-level Distribution Matching*, Wenxin Hou, Jindong Wang, Xu Tan, Tao Qin, Takahiro Shinozaki, **INTERSPEECH 2021**.
+* [6] ***[Adapter]*** *Exploiting Adapters for Cross-lingual Low-resource Speech Recognition*, Wenxin Hou, Han Zhu, Yidong Wang, Jindong Wang, Tao Qin, Renjun Xu, Takahiro Shinozaki. **IEEE/ACM TASLP 2022**.
+* [7] ***LightSpeech**: Lightweight and Fast Text to Speech with Neural Architecture Search*, Renqian Luo, Xu Tan, Rui Wang, Tao Qin, Jinzhu Li, Sheng Zhao, Enhong Chen and Tie-Yan Liu, **ICASSP 2021**.
+* [8] ***PriorGrad**: Improving Conditional Denoising Diffusion Models with Data-Dependent Adaptive Prior*, Sang-gil Lee, Heeseung Kim, Chaehun Shin, Xu Tan, Chang Liu, Qi Meng, Tao Qin, Wei Chen, Sungroh Yoon, Tie-Yan Liu, **ICLR 2022**.
+* [9] ***BinauralGrad**: A Two-Stage Conditional Diffusion Probabilistic Model for Binaural Audio Synthesis*, Yichong Leng, Zehua Chen, Junliang Guo, Haohe Liu, Jiawei Chen, Xu Tan, Danilo Mandic, Lei He, Xiang-Yang Li, Tao Qin, Sheng Zhao and Tie-Yan Liu, **NeurIPS 2022**.
+* [10] ***VideoDubber**: Machine Translation with Speech-Aware Length Control for Video Dubbing, Yihan Wu*, Junliang Guo, Xu Tan, Chen Zhang, Bohan Li, Ruihua Song,
+Lei He, Sheng Zhao, Arul Menezes, Jiang Bian, **AAAI 2022**.
 
 
 ## Contributing
