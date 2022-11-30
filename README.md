@@ -1,6 +1,6 @@
 # NeuralSpeech
 
-**NeuralSpeech** is a research project in Microsoft Research Asia focusing on neural network based speech processing, including automatic speech recognition (ASR), text to speech (TTS), spatial audio, etc. 
+**NeuralSpeech** is a research project at Microsoft Research Asia, which focuses on neural network based speech processing, including automatic speech recognition (ASR), text-to-speech synthesis (TTS), spatial audio synthesis, video dubbing, etc. 
 
 Currently this repo covers several research work: 
 * Automatic Speech Recognition
@@ -10,10 +10,10 @@ Currently this repo covers several research work:
   + [MaskCorrect, EMNLP 2022](https://arxiv.org/abs/2211.13252)
   + [CMatch for ASR, INTERSPEECH 2021](https://arxiv.org/abs/2104.07491)
   + [Adapter for ASR, TASLP 2022](https://arxiv.org/abs/2105.11905)
-* Text to Speech
+* Text-to-Speech Synthesis
   + [LightSpeech, ICASSP 2021](https://arxiv.org/abs/2102.04040)
   + [PriorGrad, ICLR 2022](https://arxiv.org/abs/2106.06406)
-* Spatial Audio
+* Spatial Audio Synthesis
   + [BinauralGrad, NeurIPS 2022](https://arxiv.org/abs/2205.14807)
 * Video Dubbing
   + [VideoDubber, AAAI 2023]()
