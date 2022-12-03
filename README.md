@@ -16,7 +16,7 @@ Currently this repo covers several research work:
 * Spatial Audio Synthesis
   + [BinauralGrad, NeurIPS 2022](https://arxiv.org/abs/2205.14807)
 * Video Dubbing
-  + [VideoDubber, AAAI 2023]()
+  + [VideoDubber, AAAI 2023](https://arxiv.org/abs/2211.16934)
 
 
 For more research in NeuralSpeech project, you can refer to this page: https://speechresearch.github.io/. We will release more research work in the future. 
