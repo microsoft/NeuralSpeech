@@ -31,7 +31,7 @@ bash scripts/train_cvss_c_zhen.sh
 
 ## Inference
 
-After downloading the pretrained models , we can test it by:
+After training your own models or downloading the pretrained models [pretrained models(zh-en)](https://drive.google.com/file/d/1CT0-BqE0JbzVIxaL2VdbUwx0MA1HdLQ3/view?usp=sharing) , we can test it by:
 
 ```
 bash scripts/infer_cvssc_zhen.sh
