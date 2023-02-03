@@ -29,6 +29,14 @@ prepare your own data and train your model following this command:
 bash scripts/train_cvss_c_zhen.sh
 ```
 
+## Inference
+
+After downloading the pretrained models , we can test it by:
+
+```
+bash scripts/infer_cvssc_zhen.sh
+```
+
 ## Reference
 
 If you find VideoDubber useful in your work, you can cite the paper as below:
@@ -40,6 +48,6 @@ If you find VideoDubber useful in your work, you can cite the paper as below:
       eprint={2211.16934},
       archivePrefix={arXiv},
       primaryClass={cs.CL}
-}
+    }
 
     
