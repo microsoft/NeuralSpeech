@@ -76,3 +76,9 @@ If you find FastCorrect 2 useful in your work, you can cite the paper as below:
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct),
 [trademark notice](https://docs.opensource.microsoft.com/releasing/), and [security reporting instructions](https://docs.opensource.microsoft.com/releasing/maintain/security/).
 
+
+## Related Works
+
+* [FastCorrect: Fast Error Correction with Edit Alignment for Automatic Speech Recognition](https://arxiv.org/abs/2105.03842)
+
+* [SoftCorrect: Error Correction with Soft Detection for Automatic Speech Recognition](https://arxiv.org/abs/2212.01039)

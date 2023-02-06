@@ -76,5 +76,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 ## Related Works
 
-* [FastCorrect 2: Fast Error Correction on Multiple Candidates for Automatic Speech Recognition](https://arxiv.org/pdf/2109.14420.pdf)
+* [FastCorrect 2: Fast Error Correction on Multiple Candidates for Automatic Speech Recognition](https://arxiv.org/abs/2109.14420)
 
+* [SoftCorrect: Error Correction with Soft Detection for Automatic Speech Recognition](https://arxiv.org/abs/2212.01039)
