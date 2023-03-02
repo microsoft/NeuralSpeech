@@ -284,7 +284,7 @@ class PriorGrad(nn.Module):
 
         # use X-mu, zero-mean data for training, and add mean at the last step of diffusion
         if is_training: # compute diffusion loss
-            t = torch.randint(0, len(self.diff_params.noise_schedule), [B], device=src_tokens.device)
+            t = torch.randint(0, len(self.diff_params.noise_schedule), [B])
             noise_scale = self.diff_noise_level[t].unsqueeze(-1).unsqueeze(-1).to(src_tokens.device)
             noise_scale_sqrt = noise_scale ** 0.5
 
