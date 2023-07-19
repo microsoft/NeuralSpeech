@@ -38,7 +38,7 @@ The model can generate binaural audio with good quality trained with 300K steps,
 
 ### Pretrained models
 
-The pretrained model of two stages can be downloaded in [stage1](https://msramldl.blob.core.windows.net/modelrelease/binauralgrad/pretrained_ckpt.s1.pt) and [stage2](https://msramldl.blob.core.windows.net/modelrelease/binauralgrad/pretrained_ckpt.s2.pt). We assume the model of first stage is in `checkpoints/stage_one/pretrained_ckpt.s1.pt` and the model of second stage is in `checkpoints/stage_two/pretrained_ckpt.s2.pt`.
+The pretrained model of two stages can be downloaded in [stage1](https://msramllasc.blob.core.windows.net/modelrelease/binauralgrad/pretrained_ckpt.s1.pt) and [stage2](https://msramllasc.blob.core.windows.net/modelrelease/binauralgrad/pretrained_ckpt.s2.pt). We assume the model of first stage is in `checkpoints/stage_one/pretrained_ckpt.s1.pt` and the model of second stage is in `checkpoints/stage_two/pretrained_ckpt.s2.pt`.
 
 ### Inference
 After downloading and placing the pretrained models as mentioned in above section, we can test it by:
