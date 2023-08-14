@@ -14,7 +14,7 @@ Some dependencies are as follows:
 ## SoftCorrect Modules
 SoftCorrect consists an encoder as error detector and a decoder as error corrector, which can be trained seperately.
 
-Since our model is a Chinese character-based model, arbitrary SentencePiece model can be used during the inference phase. We provide a SentencePiece model in [here](https://msramllasc.blob.core.windows.net/modelrelease/FastCorrect_zhwiki_sentencepiece.model), which is trained on Chinese wiki data.
+Since our model is a Chinese character-based model, arbitrary SentencePiece model can be used during the inference phase. We provide a SentencePiece model in [here](https://drive.google.com/file/d/1-w-K-IDFMc29kiUTQ6FKtAZB2NfVp2VE/view?usp=sharing), which is trained on Chinese wiki data.
 
 ### Error Detector (Encoder)
 
@@ -24,14 +24,14 @@ The error detector can be trained on pseudo data only, which only requires unpai
 After collecting the unpaired data, we binarize it with `runs/data_gen_unpaired.sh`
 
 #### Train the BERT generator
-We use a BERT generator to construct the pseudo data for ASR correction (sentence with errors simulated by BERT). We can train the BERT generator with `runs/train_bert_generator.sh`. The pretrained BERT model on the internal data can be downloaded in [here](https://msramllasc.blob.core.windows.net/modelrelease/softcorrect/bert_generator/checkpoint30.pt).
+We use a BERT generator to construct the pseudo data for ASR correction (sentence with errors simulated by BERT). We can train the BERT generator with `runs/train_bert_generator.sh`. The pretrained BERT model on the internal data can be downloaded in [here](https://drive.google.com/file/d/1-pV5gxzqyxXiX9G46NRpv37M72CI0Hw3/view?usp=sharing).
 
 #### Train the error detector
 Since SoftCorrect makes use of multiple candidates, we use BERT generator to construct the pseudo ASR correction data with multiple candidates. The data generation is achieved in an online manner. To stablize the training, the error detector can be trained firstly with `runs/pretrain_detector.sh` for 1 epoch (BERT style loss with multiple candidate as input) and then trained with `runs/finetune_detector.sh` (Anti-copy loss).
-The model trained on two stage can be download in [first stage](https://msramllasc.blob.core.windows.net/modelrelease/softcorrect/detector_pretrain/checkpoint5.pt) and [second stage](https://msramllasc.blob.core.windows.net/modelrelease/softcorrect/detector_finetune/checkpoint16.pt). 
+The model trained on two stage can be download in [first stage](https://drive.google.com/file/d/1-ZkOqWXSW1mR85CR9_GoTq7tbVxCHmtl/view?usp=sharing) and [second stage](https://drive.google.com/file/d/10FXP5aA3Aobu-kvF-LDjd5bea9-QCt3S/view?usp=share_link). 
 
 #### Test the error detector
-The test data can be downloaded and unzipped from [here](https://msramllasc.blob.core.windows.net/modelrelease/softcorrect/eval_data.tar.gz). To test the error detector model after the second-stage training, we can score each token in each candidate with the error detector with `runs/test_detector.sh` and combine the score with the acoustic score with `runs/detect_with_lmscore.sh`. The results will be used by error corrector.
+The test data can be downloaded and unzipped from [here](https://drive.google.com/file/d/1-hsOgDsIkbWmB3lfWZ4-pBXNkOUyE1qo/view?usp=share_link). To test the error detector model after the second-stage training, we can score each token in each candidate with the error detector with `runs/test_detector.sh` and combine the score with the acoustic score with `runs/detect_with_lmscore.sh`. The results will be used by error corrector.
 
 Note that the model after the second-stage training is the final error detector. We release the pretrained BERT generator and the first-stage model to help the potential future work based on SoftCorrect. And the first-stage training (for 1 epoch) is not a necessary step for SoftCorrect. It will be fine if the detector is trained directly with Anti-copy loss (second-stage).
 
@@ -39,17 +39,17 @@ Note that the model after the second-stage training is the final error detector.
 
 #### Pretrained model
 
-The error corrector is pretrained on unpaired text data with `runs/pretrain_corrector.sh`. The pretrained model can be downloaded from [here](https://msramllasc.blob.core.windows.net/modelrelease/softcorrect/corrector_pretrain/checkpoint6.pt).
+The error corrector is pretrained on unpaired text data with `runs/pretrain_corrector.sh`. The pretrained model can be downloaded from [here](https://drive.google.com/file/d/1-v6x2NTw1lsUwLUyLuWYBHuEVKqjZLFs/view?usp=share_link).
 
 #### Finetuning data generation
 
-The pretrained model can be finetuned on AISHELL-1 data. The finetuning databin can be generate with `runs/data_gen_corrector_finetune.sh`. The raw data required by the script can be downloaded and unzipped in [here](https://msramllasc.blob.core.windows.net/modelrelease/softcorrect/raw_data.tar.gz). For the preparation of finetuning data, please refer to [Step 2 of FastCorrect](https://github.com/microsoft/NeuralSpeech/blob/master/FastCorrect/README.md) since the procedure is similar.
+The pretrained model can be finetuned on AISHELL-1 data. The finetuning databin can be generate with `runs/data_gen_corrector_finetune.sh`. The raw data required by the script can be downloaded and unzipped in [here](https://drive.google.com/file/d/1-q71i7iR2awMjS9f9xX0LDLiu5gR74ew/view?usp=share_link). For the preparation of finetuning data, please refer to [Step 2 of FastCorrect](https://github.com/microsoft/NeuralSpeech/blob/master/FastCorrect/README.md) since the procedure is similar.
 
 #### Finetuning model
 We can finetune the pretrained corrector model with `runs/finetune_corrector.sh` (for about 10 epochs).
 
 #### Test the error corrector
-The test data can be downloaded and unzipped from [here](https://msramllasc.blob.core.windows.net/modelrelease/softcorrect/eval_data.tar.gz) (If not downloaded in previous section). We test the error corrector with `runs/test_corrector.sh`.
+The test data can be downloaded and unzipped from [here](https://drive.google.com/file/d/1-hsOgDsIkbWmB3lfWZ4-pBXNkOUyE1qo/view?usp=share_link) (If not downloaded in previous section). We test the error corrector with `runs/test_corrector.sh`.
 
 After installing sctk (`./install_sctk.sh`), we can calculate WER with `cal_wer_aishell.sh`.
 
