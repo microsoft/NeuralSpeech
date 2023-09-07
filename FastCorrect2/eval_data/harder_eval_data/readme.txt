@@ -1,3 +1,3 @@
 This folder contains transcript from ASR model in FastCorrect 2 with stronger language model for joint-decoding compared with that in FastCorrect.
 
-The corresponding ASR transcrpt for training can be found in "https://msramllasc.blob.core.windows.net/modelrelease/FastCorrect2_harder_training_data_aishell.tar.gz". Please note that the training data is not aligned. So you need to align the nbest candidate and obtain the duration by yourself.
+The corresponding ASR transcrpt for training can be found in "https://drive.google.com/file/d/1-rrTNGeeCtyIOFWJ9Esc_vSTNOcznpir/view?usp=sharing". Please note that the training data is not aligned. So you need to align the nbest candidate and obtain the duration by yourself.
