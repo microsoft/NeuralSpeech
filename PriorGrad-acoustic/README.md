@@ -138,14 +138,14 @@ If you are only interested in text-to-speech with `tasks/priorgrad_inference.py`
 
 Note that you need to build the dataset (step 2, 3, and 4 in the [Quick Start and Examples](#quick-start-and-examples) section above) to use the checkpoints for other functionalities. We also provide the pre-built LJSpeech dataset that can skip these steps.
 
-Pre-built dataset (LJSpeech): [Download from Azure blob storage](https://drive.google.com/file/d/111X6RsWEzi-Pm2GsttkQVfvwz75_nyln/view?usp=sharing) and unzip the file to `data/ljspeech_hfg` 
+Pre-built dataset (LJSpeech): [Download from Huggingface](https://huggingface.co/neuralspeech/priorgrad/blob/main/ljspeech_hfg_full.zip) and unzip the file to `data/ljspeech_hfg` 
 
-Pre-built statistics (LJSpeech, inference-only): [Download from Azure blob storage](https://drive.google.com/file/d/1lClxyKvgUzuN_SoB6250P41kS-G8cEEl/view?usp=sharing) and unzip the file to `data/ljspeech_hfg`
+Pre-built statistics (LJSpeech, inference-only): [Download from Huggingface](https://huggingface.co/neuralspeech/priorgrad/blob/main/ljspeech_hfg.zip) and unzip the file to `data/ljspeech_hfg`
 . This is a minimal subset of the pre-built dataset required for the text-to-speech inference. 
 
-PriorGrad: [Download from Azure blob storage](https://drive.google.com/file/d/1CSeBVeWh7m8SCxQBLkSRp_zt6qU6lNHu/view?usp=sharing) and unzip the file to `checkpoints/priorgrad`
+PriorGrad: [Download from Huggingface](https://huggingface.co/neuralspeech/priorgrad/blob/main/priorgrad_am.zip) and unzip the file to `checkpoints/priorgrad`
 
-PriorGrad_MAS: [Download from Azure blob storage](https://drive.google.com/file/d/1U6oIbI8Y6ugFjMg3f4tSEfOSv-a-2b6K/view?usp=sharing) and unzip the file to `checkpoints/priorgrad_mas`
+PriorGrad_MAS: [Download from Huggingface](https://huggingface.co/neuralspeech/priorgrad/blob/main/priorgrad_am_mas.zip) and unzip the file to `checkpoints/priorgrad_mas`
 
 
 

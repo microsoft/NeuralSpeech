@@ -15,11 +15,8 @@ Note: pytorch_lightning 0.6.0 may have a security issue(see [here](https://githu
 
 ### 1. Prepare dataset
 
-Note: You can download our preprocessed binarized data from [here](https://drive.google.com/file/d/1lCGi6X-QVz2KV80dx_dibZjI-P6JLq6L/view?usp=sharing), and unpack it:
-```bash
-wget https://drive.google.com/file/d/1lCGi6X-QVz2KV80dx_dibZjI-P6JLq6L/view?usp=sharing
-tar -zxvf data.tgz
-```
+Note: You can download our preprocessed binarized data from [here](https://huggingface.co/neuralspeech/lightspeech/blob/main/data.tgz), and unpack it:
+
 then you can skip step 1-3, and directly navigate to [step 4](#4-train-lightspeech).
 
 ```bash
@@ -102,11 +99,11 @@ gen_wav_time: 626.7530158730159
 So the RTF is `5.86/626.75=0.0093`.
 
 ### 7. Trained Checkpoint
-We release our trained model checkpoint [here](https://drive.google.com/file/d/1ysGWcqos6DsMq0AmtdPIeU3IkVwziXa8/view?usp=sharing). You can donwnload it and place it under `checkpoints/lightspeech`. Then you can do the inference following [step 6](#6-inference).
+We release our trained model checkpoint [here](https://huggingface.co/neuralspeech/lightspeech/blob/main/model_ckpt_steps_100000.ckpt). You can donwnload it and place it under `checkpoints/lightspeech`. Then you can do the inference following [step 6](#6-inference).
 ```bash
 mkdir -p checkpoints/lightspeech
 cd checkpoints/lightspeech
-wget https://drive.google.com/file/d/1ysGWcqos6DsMq0AmtdPIeU3IkVwziXa8/view?usp=sharing
+# NOW DOWNLOAD MODEL #
 cd ../../
 export CUDA_VISIBLE_DEVICES=0
 export PYTHONPATH=.
