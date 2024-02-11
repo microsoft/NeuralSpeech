@@ -39,7 +39,7 @@ if __name__ == '__main__':
   parser.add_argument('--fp16', action='store_true', default=False,
       help='use 16-bit floating point operations for training')
   parser.add_argument('--binaural-type', default="", type=str,
-      help='maximum number of training steps')  
+      help='binaural type')  
   parser.add_argument('--params', default="params", type=str,
-    help='maximum number of training steps')  
+    help='param set name')  
   main(parser.parse_args())
