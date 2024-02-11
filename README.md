@@ -13,6 +13,7 @@ Currently this repo covers several research work:
 * Text-to-Speech Synthesis
   + [LightSpeech, ICASSP 2021](https://arxiv.org/abs/2102.04040)
   + [PriorGrad, ICLR 2022](https://arxiv.org/abs/2106.06406)
+  + [PromptTTS 2, ICLR 2024](https://arxiv.org/abs/2309.02285)
 * Spatial Audio Synthesis
   + [BinauralGrad, NeurIPS 2022](https://arxiv.org/abs/2205.14807)
 * Video Dubbing
@@ -42,6 +43,7 @@ If you find NeuralSpeech project useful in your work, you can cite the following
 * [9] ***BinauralGrad**: A Two-Stage Conditional Diffusion Probabilistic Model for Binaural Audio Synthesis*, Yichong Leng, Zehua Chen, Junliang Guo, Haohe Liu, Jiawei Chen, Xu Tan, Danilo Mandic, Lei He, Xiang-Yang Li, Tao Qin, Sheng Zhao and Tie-Yan Liu, **NeurIPS 2022**.
 * [10] ***VideoDubber**: Machine Translation with Speech-Aware Length Control for Video Dubbing, Yihan Wu*, Junliang Guo, Xu Tan, Chen Zhang, Bohan Li, Ruihua Song,
 Lei He, Sheng Zhao, Arul Menezes, Jiang Bian, **AAAI 2022**.
+* [11] ***PromptTTS 2**: Describing and Generating Voices with Text Prompt*, Yichong Leng, Zhifang Guo, Kai Shen, Xu Tan, Zeqian Ju, Yanqing Liu, Yufei Liu, Dongchao Yang, Leying Zhang, Kaitao Song, Lei He, Xiang-Yang Li, Sheng Zhao, Tao Qin, Jiang Bian, **ICLR 2024**.
 
 
 ## Contributing
