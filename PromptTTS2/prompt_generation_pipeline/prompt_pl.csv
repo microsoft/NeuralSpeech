@@ -1,0 +1,81 @@
+class,prompt
+gender,I need a [placeholder]-specific voice for this project.
+gender,Please generate a voice that sounds like a [placeholder].
+gender,I'm looking for a voice that reflects the characteristics of a [placeholder].
+gender,Could you provide me with a voice that is distinctly [placeholder]-sounding?
+gender,I require a voice that corresponds to the gender of a [placeholder].
+gender,Is it possible to generate a voice that matches the gender of a [placeholder]?
+gender,[placeholder] commanded attention from start to finish.
+gender,Can you generate a voice that represents the gender of a [placeholder]?
+gender,I'd like a voice that is specific to the gender of a [placeholder].
+gender,Could you please generate a voice that corresponds to the [placeholder] gender?
+gender,Please give me a [placeholder] voice.
+gender,I kindly request a voice that is [placeholder]-sounding.
+gender,Could you provide me with a voice that matches the gender of a [placeholder]?
+gender,I would appreciate receiving a voice specifically tailored to a [placeholder].
+gender,May I have a voice that embodies the characteristics of a [placeholder] speaker?
+gender,"I'm in need of a [placeholder] voice, if possible."
+gender,I'm seeking a voice with a [placeholder] identity; could you assist me with that?
+gender,"Could you generate a voice that aligns with the gender of a [placeholder], please?"
+gender,[placeholder] spoke with remarkable clarity.
+gender,[placeholder] expressed their ideas clearly.
+volume,The speaker's volume was [placeholder].
+volume,The speech was delivered at a [placeholder] volume.
+volume,The volume of the speech was [placeholder] throughout.
+volume,The speaker maintained a consistent [placeholder] volume.
+volume,The speech was characterized by a [placeholder] volume.
+volume,The volume of the speaker's voice was [placeholder].
+volume,"Throughout the speech, the volume remained [placeholder]."
+volume,The speaker's volume ranged from [placeholder] to [placeholder].
+volume,The speech had a varying [placeholder] volume.
+volume,The volume of the speech fluctuated between [placeholder] and [placeholder].
+volume,Please generate a [placeholder] voice.
+volume,I need a voice that is [placeholder] in volume.
+volume,Could you create a voice with a [placeholder] volume level?
+volume,I'm looking for a voice that is [placeholder] in terms of volume.
+volume,Generate a voice that has a [placeholder] volume.
+volume,Please produce a voice with a volume level of [placeholder].
+volume,I require a voice that is [placeholder] in terms of loudness.
+volume,Could you generate a voice that is [placeholder] in volume?
+volume,I'm looking for a voice with a [placeholder] volume level.
+volume,Please create a voice that has a [placeholder] volume.
+pitch,"I need a voice that is [placeholder] pitched, please."
+pitch,Could you find a voice with a [placeholder] pitch for me?
+pitch,I'm looking for a voice that has a [placeholder] tone.
+pitch,Please provide a voice that is [placeholder] in pitch.
+pitch,"I require a voice with a [placeholder] pitch level, thank you."
+pitch,Can you help me find a voice that sounds [placeholder] pitched?
+pitch,"I'm seeking a voice that has a [placeholder] tone, please."
+pitch,Could you assist me in finding a voice that is [placeholder] in pitch?
+pitch,"I'm interested in a voice with a [placeholder] pitch level, please."
+pitch,Please provide me with a voice that sounds [placeholder] pitched.
+pitch,This speech has a [placeholder] pitch.
+pitch,The pitch of this speech is [placeholder].
+pitch,The speaker uses a [placeholder] pitch.
+pitch,This speech is delivered with a [placeholder] pitch.
+pitch,The pitch of the speaker's voice is [placeholder].
+pitch,The speaker's pitch is [placeholder].
+pitch,The pitch used in this speech is [placeholder].
+pitch,The voice has a [placeholder] pitch.
+pitch,This speech is characterized by a [placeholder] pitch.
+pitch,The pitch of this speech falls in the [placeholder] range.
+speed,Please generate a voice that speaks at a [placeholder] pace.
+speed,I need a voice that speaks at a [placeholder] speed.
+speed,Can you create a voice that speaks at a [placeholder] rate?
+speed,Looking for a voice that speaks at a [placeholder] tempo.
+speed,In search of a voice with a [placeholder] speaking tempo.
+speed,I require a voice that speaks at a [placeholder] pace.
+speed,Need a voice with a [placeholder] speaking rate.
+speed,Seeking a voice that speaks at a [placeholder] speed.
+speed,Desiring a voice with a [placeholder] speaking tempo.
+speed,Could you generate a voice with a [placeholder] speaking rate?
+speed,The speed of speech was [placeholder].
+speed,The speaker's delivery was [placeholder].
+speed,The presentation proceeded at [placeholder] tempo.
+speed,The talk unfolded at [placeholder] rate.
+speed,The lecturer's speed was [placeholder].
+speed,The speech moved at [placeholder] pace.
+speed,The presenter's delivery was [placeholder].
+speed,The tempo of the talk was [placeholder].
+speed,The speaker's speed was [placeholder].
+speed,The presentation flowed at [placeholder] speed.
