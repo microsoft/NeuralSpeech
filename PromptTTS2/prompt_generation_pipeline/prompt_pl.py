@@ -19,12 +19,12 @@ normal_threshold = 0.5
 use_placeholder = 0.5 
 ask_error_time = 10
 # The first key is the normal value
+sentence_num = cfg.sentence_num  
 prefix_sentence = f"I have some sentences, can you combine these sentences into one sentence to describe the style of speech with the same meaning? You can add different elements to make the description not boring and use different sentence structure in {sentence_num} different sentences. The sentences are: "
 prefix_sentence_word = f"I have some sentences, can you combine these sentences into one phrase with fewer than [word_num] words to describe the style of speech with the same meaning? You can add different elements to make the description not boring and use different sentence structure in {sentence_num} different sentences.  Please note that the sentences you generate must include [class_id]. The sentences are: "
 prefix_sp = f"I have some sentences, can you combine these sentences into one sentence and keep all of the '[]' to describe the style of speech with the same meaning? You can add different elements to make the description not boring and use different sentence structure in {sentence_num} different sentences. The sentences are:  "
 prefix_sp_word = f"I have some sentences, can you combine these sentences into one phrase with fewer than [word_num] and keep all of the '[]' to describe the style of speech with the same meaning? You can add different elements to make the description not boring and use different sentence structure in {sentence_num} different sentences.  Please note that the sentences you generate must include [class_id]. The sentences are: "
 
-sentence_num = cfg.sentence_num  
 # Stage one
 prefix_keyword = cfg.prefix_keyword
 # Stage two
